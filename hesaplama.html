@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Devrik Sargı Hesaplama</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117; --surface: #181c27; --surface2: #1e2336; --border: #2a3050;
+    --accent: #e8a020; --accent2: #c0570a; --text: #dde3f0; --muted: #7a8399;
+    --green: #2ecc71; --red: #e74c3c; --blue: #5dade2; --purple: #bb8fce;
+    --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; min-height: 100vh; }
+
+  header { background: linear-gradient(135deg, #0a0d14 0%, #1a1200 100%); border-bottom: 2px solid var(--accent); padding: 18px 32px; display: flex; align-items: center; gap: 20px; }
+  .logo-icon { width: 44px; height: 44px; border: 2px solid var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+  header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--accent); line-height: 1; }
+  header p { color: var(--muted); font-size: 12px; letter-spacing: 1px; margin-top: 2px; }
+
+  .container { max-width: 1300px; margin: 0 auto; padding: 28px 24px; display: grid; grid-template-columns: 360px 1fr; gap: 24px; align-items: start; }
+
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 16px; }
+  .panel-header { background: var(--surface2); border-bottom: 1px solid var(--border); padding: 12px 18px; display: flex; align-items: center; gap: 10px; }
+  .panel-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--accent); }
+  .panel-body { padding: 18px; }
+
+  .field-group { margin-bottom: 13px; }
+  .field-group label { display: block; font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+  .field-group input, .field-group select { width: 100%; background: #0f1117; border: 1px solid var(--border); border-radius: 5px; color: var(--text); font-family: 'IBM Plex Mono', monospace; font-size: 14px; padding: 8px 12px; transition: border-color 0.2s; outline: none; }
+  .field-group input:focus, .field-group select:focus { border-color: var(--accent); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .field-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .unit { font-size: 10px; color: var(--muted); margin-top: 3px; font-family: 'IBM Plex Mono', monospace; }
+  .hint { font-size: 10px; color: var(--muted); margin-top: 4px; font-style: italic; }
+
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 2px; color: var(--muted); margin-bottom: 10px; margin-top: 4px; display: flex; align-items: center; gap: 8px; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .halka-list { display: flex; flex-direction: column; gap: 10px; }
+  .halka-card { background: #0f1117; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: border-color 0.2s; }
+  .halka-card:hover { border-color: var(--accent2); }
+  .halka-card-header { background: var(--surface2); padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+  .halka-card-header span { font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 2px; color: var(--accent); }
+  .btn-remove { background: none; border: 1px solid #3a1515; border-radius: 4px; color: var(--red); cursor: pointer; padding: 2px 8px; font-size: 12px; transition: all 0.2s; }
+  .btn-remove:hover { background: #3a1515; }
+  .halka-card-body { padding: 12px 14px; }
+  .kanal-box { background: #0a0d14; border: 1px solid #2a3050; border-radius: 5px; padding: 10px 12px; margin-top: 8px; }
+  .kanal-box label { font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 5px; }
+
+  .btn-primary { width: 100%; background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%); border: none; border-radius: var(--radius); color: #0a0700; font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 3px; padding: 13px; cursor: pointer; transition: opacity 0.2s, transform 0.1s; }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-secondary { width: 100%; background: transparent; border: 1px solid var(--accent); border-radius: var(--radius); color: var(--accent); font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 2px; padding: 9px; cursor: pointer; transition: all 0.2s; margin-top: 8px; }
+  .btn-secondary:hover { background: rgba(232,160,32,0.08); }
+
+  .results-panel { position: sticky; top: 24px; }
+
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .summary-box { background: #0a0d14; border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; text-align: center; }
+  .summary-box .val { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--accent); line-height: 1; }
+  .summary-box .lbl { font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+  .summary-box.duz .val { color: var(--blue); }
+  .summary-box.devrik .val { color: var(--purple); }
+  .summary-box.toplam .val { font-size: 34px; color: var(--green); }
+
+  /* TABS */
+  .tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+  .tab-btn { flex: 1; padding: 9px; border: 1px solid var(--border); background: #0a0d14; color: var(--muted); border-radius: 6px; font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; }
+  .tab-btn.active-duz { border-color: var(--blue); color: var(--blue); background: rgba(93,173,226,0.08); }
+  .tab-btn.active-devrik { border-color: var(--purple); color: var(--purple); background: rgba(187,143,206,0.08); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .tbl-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+  thead tr { background: var(--surface2); }
+  thead th { padding: 9px 12px; text-align: left; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid #1a1e2a; transition: background 0.15s; }
+  tbody tr:hover { background: rgba(232,160,32,0.03); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody td { padding: 8px 12px; }
+
+  .badge { display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: 10px; font-weight: 600; letter-spacing: 1px; }
+  .badge-kanal { background: rgba(192,87,10,0.25); color: #f0a030; border: 1px solid #c0570a; }
+  .badge-son { background: rgba(231,76,60,0.2); color: #e74c3c; border: 1px solid #922b21; }
+
+  .row-kanal-duz td { background: rgba(93,173,226,0.06); color: var(--blue); }
+  .row-kanal-devrik td { background: rgba(187,143,206,0.06); color: var(--purple); }
+  .row-son td { color: var(--red); font-style: italic; }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .empty-state .big { font-size: 48px; margin-bottom: 12px; }
+
+  .print-btn { background: transparent; border: 1px solid var(--border); border-radius: 5px; color: var(--muted); cursor: pointer; padding: 6px 14px; font-size: 12px; font-family: 'IBM Plex Sans', sans-serif; transition: all 0.2s; margin-left: auto; }
+  .print-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .halka-sep { border: none; border-top: 2px solid var(--border); margin: 4px 0; }
+
+  @media (max-width: 900px) { .container { grid-template-columns: 1fr; } .results-panel { position: static; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-icon">⚡</div>
+  <div>
+    <h1>Devrik Sargı Hesaplama</h1>
+    <p>Transformatör YG Bobini — Düz &amp; Devrik Sargı Tel Metrajı / Kanal Bandı Pozisyonları</p>
+  </div>
+</header>
+
+<div class="container">
+  <!-- SOL: GİRİŞ -->
+  <div class="left-col">
+    <div class="panel">
+      <div class="panel-header"><span>📐</span><h2>Bobin Parametreleri</h2></div>
+      <div class="panel-body">
+        <div class="section-title">Çap Ölçüleri</div>
+        <div class="field-row">
+          <div class="field-group">
+            <label>İç Çap</label>
+            <input type="number" id="icCap" placeholder="ör: 600" min="0" step="0.1">
+            <div class="unit">mm</div>
+          </div>
+          <div class="field-group">
+            <label>Dış Çap</label>
+            <input type="number" id="disCap" placeholder="ör: 750" min="0" step="0.1">
+            <div class="unit">mm (kontrol)</div>
+          </div>
+        </div>
+
+        <div class="section-title">Tel Ölçüleri (izoleli)</div>
+        <div class="field-row">
+          <div class="field-group">
+            <label>Tel Radyal Yüksekliği</label>
+            <input type="number" id="telRadyal" placeholder="ör: 3.5" min="0" step="0.1">
+            <div class="unit">mm</div>
+          </div>
+          <div class="field-group">
+            <label>Paralel Tel Sayısı</label>
+            <select id="paralelTel">
+              <option value="1">1 — Tek</option>
+              <option value="2">2 — İki</option>
+              <option value="3">3 — Üç</option>
+              <option value="4">4 — Dört</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section-title">Kanal Bandı</div>
+        <div class="field-group">
+          <label>Kanal Bandı Radyal Yüksekliği</label>
+          <input type="number" id="kanalRadyal" placeholder="ör: 4" min="0" step="0.1">
+          <div class="unit">mm</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header"><span>🔄</span><h2>Halkalar</h2></div>
+      <div class="panel-body">
+        <div class="halka-list" id="halkaList"></div>
+        <button class="btn-secondary" onclick="halkaEkle()">+ Halka Ekle</button>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="hesapla()">⚙ HESAPLA</button>
+  </div>
+
+  <!-- SAĞ: SONUÇLAR -->
+  <div class="results-panel">
+    <div class="panel" style="margin-bottom:0">
+      <div class="panel-header">
+        <span>📊</span><h2>Sonuçlar</h2>
+        <button class="print-btn" onclick="window.print()">🖨 Yazdır</button>
+      </div>
+      <div class="panel-body" id="resultsBody">
+        <div class="empty-state">
+          <div class="big">⚡</div>
+          <p>Parametreleri girin ve<br><strong>Hesapla</strong> butonuna basın.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let halkaCount = 0;
+
+function halkaEkle() {
+  halkaCount++;
+  const id = halkaCount;
+  const div = document.createElement('div');
+  div.className = 'halka-card';
+  div.id = `halka-${id}`;
+  div.innerHTML = `
+    <div class="halka-card-header">
+      <span>HALKA ${id}</span>
+      <button class="btn-remove" onclick="halkaKaldir(${id})">✕ Kaldır</button>
+    </div>
+    <div class="halka-card-body">
+      <div class="field-row">
+        <div class="field-group">
+          <label>Spir Sayısı</label>
+          <input type="number" id="spir-${id}" placeholder="ör: 8" min="1" step="1">
+        </div>
+        <div class="field-group">
+          <label>Eksiltme (mm)</label>
+          <input type="number" id="eksiltme-${id}" placeholder="ör: 50" min="0" step="0.1">
+          <div class="unit">Son spir kısaltması</div>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Paralel Tel (bu halka — boş bırakılırsa genel)</label>
+        <select id="paralel-${id}">
+          <option value="">Genel ayarı kullan</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+      <div class="kanal-box">
+        <label>Kanal bandı olan spirler (virgülle — boş = yok)</label>
+        <input type="text" id="kanalSpirler-${id}" placeholder="ör: 2,3,5,6,7" style="margin-top:4px;">
+        <div class="hint">Örnek: 2,3,5,6,7 → o spirlerin üzerinde kanal bandı var</div>
+      </div>
+    </div>
+  `;
+  document.getElementById('halkaList').appendChild(div);
+}
+
+function halkaKaldir(id) {
+  const el = document.getElementById(`halka-${id}`);
+  if (el) el.remove();
+}
+
+function fmt(val, dec=2) {
+  return val.toFixed(dec).replace('.', ',');
+}
+
+function parseKanalSpirler(str) {
+  if (!str || !str.trim()) return new Set();
+  return new Set(str.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n) && n > 0));
+}
+
+function hesaplaHalka(spirSayi, paralel, telR, kanalR, kanalSpirler, eksiltme, baslangicCap) {
+  // Düz sargı: iç çaptan dış çapa
+  let cap = baslangicCap;
+  const spirler = [];
+  let kumDuz = 0;
+
+  for (let s = 1; s <= spirSayi; s++) {
+    const ortaCap = cap + paralel * telR;
+    const tamCevre = Math.PI * ortaCap;
+    const sonSpir = (s === spirSayi);
+    const spirBoy = sonSpir ? tamCevre - eksiltme : tamCevre;
+    const kanalVar = kanalSpirler.has(s);
+
+    const kumDuzBaslangic = kumDuz;
+    kumDuz += spirBoy;
+
+    spirler.push({
+      s, ortaCap, spirBoy, kanalVar, sonSpir,
+      kumDuzBaslangic,
+      kumDuz,
+    });
+
+    cap += 2 * paralel * telR;
+    if (kanalVar) cap += 2 * kanalR;
+  }
+
+  const toplamDuz = kumDuz;
+
+  const spirlerDevrik = spirler.map((sp, i) => {
+    const duzEsIndex = spirSayi - 1 - i;
+    const duzEs = spirler[duzEsIndex];
+    const kumDevrikBaslangic = toplamDuz - duzEs.kumDuz;
+    const kumDevrikBitis     = toplamDuz - duzEs.kumDuzBaslangic;
+    return {
+      s: i + 1,
+      ortaCap: duzEs.ortaCap,
+      spirBoy: duzEs.spirBoy,
+      kanalVar: duzEs.kanalVar,
+      sonSpir: duzEs.sonSpir,
+      kumDevrikBaslangic,
+      kumDevrikBitis,
+    };
+  });
+
+  // Son çap (dış çap hesaplanan)
+  const hesaplananDisCap = cap - (kanalSpirler.has(spirSayi) ? 2 * kanalR : 0);
+
+  return { spirler, spirlerDevrik, toplamDuz, hesaplananDisCap };
+}
+
+function aktifTab(tabId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.className = 'tab-btn');
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById(`tab-btn-${tabId}`).classList.add(tabId === 'duz' ? 'active-duz' : 'active-devrik');
+  document.getElementById(`tab-${tabId}`).classList.add('active');
+}
+
+function hesapla() {
+  const icCap     = parseFloat(document.getElementById('icCap').value);
+  const disCap    = parseFloat(document.getElementById('disCap').value);
+  const telR      = parseFloat(document.getElementById('telRadyal').value);
+  const paralelG  = parseInt(document.getElementById('paralelTel').value);
+  const kanalR    = parseFloat(document.getElementById('kanalRadyal').value) || 0;
+
+  if (!icCap || !telR) {
+    alert('İç çap ve tel radyal yüksekliği zorunludur.');
+    return;
+  }
+
+  const cards = document.querySelectorAll('.halka-card');
+  if (cards.length === 0) { alert('En az bir halka ekleyin.'); return; }
+
+  const halkalar = [];
+  let valid = true;
+  cards.forEach(card => {
+    const id = card.id.replace('halka-', '');
+    const spirSayi   = parseInt(document.getElementById(`spir-${id}`).value);
+    const eksiltme   = parseFloat(document.getElementById(`eksiltme-${id}`).value) || 0;
+    const paralelVal = document.getElementById(`paralel-${id}`).value;
+    const paralel    = paralelVal ? parseInt(paralelVal) : paralelG;
+    const kanalStr   = document.getElementById(`kanalSpirler-${id}`).value;
+    const kanalSpirler = parseKanalSpirler(kanalStr);
+
+    if (!spirSayi || spirSayi < 1) {
+      alert(`Halka ${id}: Spir sayısı girilmedi.`); valid = false; return;
+    }
+    halkalar.push({ id, spirSayi, paralel, kanalSpirler, eksiltme });
+  });
+  if (!valid) return;
+
+  // Tüm halkalar aynı iç/dış çapı paylaşır
+  const sonuclar = halkalar.map(h =>
+    hesaplaHalka(h.spirSayi, h.paralel, telR, kanalR, h.kanalSpirler, h.eksiltme, icCap)
+  );
+
+  const toplamDuzMm    = sonuclar.reduce((t, s) => t + s.toplamDuz, 0);
+  const toplamDevrikMm = toplamDuzMm; // aynı tel miktarı
+  const hesapDisCap    = sonuclar[0].hesaplananDisCap;
+  const capUyari       = disCap && Math.abs(hesapDisCap - disCap) > 2
+    ? `<div style="color:var(--red);font-size:11px;margin-bottom:12px;">⚠ Hesaplanan dış çap: ${fmt(hesapDisCap,1)} mm — Girilen: ${fmt(disCap,1)} mm (fark: ${fmt(Math.abs(hesapDisCap-disCap),1)} mm)</div>`
+    : disCap ? `<div style="color:var(--green);font-size:11px;margin-bottom:12px;">✓ Dış çap kontrolü: ${fmt(hesapDisCap,1)} mm ✓</div>` : '';
+
+  // ÖZET
+  const ozet = `
+    ${capUyari}
+    <div class="summary-grid">
+      <div class="summary-box duz">
+        <div class="val">${fmt(toplamDuzMm/1000, 3)} m</div>
+        <div class="lbl">Düz Sargı Toplam</div>
+      </div>
+      <div class="summary-box devrik">
+        <div class="val">${fmt(toplamDevrikMm/1000, 3)} m</div>
+        <div class="lbl">Devrik Sargı Toplam</div>
+      </div>
+      <div class="summary-box toplam">
+        <div class="val">${halkalar.length}</div>
+        <div class="lbl">Halka Sayısı</div>
+      </div>
+    </div>
+  `;
+
+  // TABLO OLUŞTUR
+  function buildTable(tip) {
+    const isDuz = tip === 'duz';
+    const renk = isDuz ? 'var(--blue)' : 'var(--purple)';
+    const rowClass = isDuz ? 'row-kanal-duz' : 'row-kanal-devrik';
+
+    let rows = '';
+    sonuclar.forEach((sonuc, hi) => {
+      const spirler = isDuz ? sonuc.spirler : sonuc.spirlerDevrik;
+      if (hi > 0) rows += `<tr><td colspan="7" style="padding:2px;background:var(--surface2);"></td></tr>`;
+
+      spirler.forEach(sp => {
+        const bas  = isDuz ? sp.kumDuzBaslangic : sp.kumDevrikBaslangic;
+        const bit  = isDuz ? sp.kumDuz          : sp.kumDevrikBitis;
+        const kanalBasCell = sp.kanalVar
+          ? `<span style="color:#f0a030;font-weight:600">${fmt(bas, 1)}</span>`
+          : '<span style="color:#3a4060">—</span>';
+        const kanalBitCell = sp.kanalVar
+          ? `<span style="color:#f0a030;font-weight:600">${fmt(bit, 1)}</span>`
+          : '<span style="color:#3a4060">—</span>';
+        const badge = sp.kanalVar ? `<span class="badge badge-kanal">KANAL</span> ` : '';
+        const sonBadge = sp.sonSpir ? `<span class="badge badge-son">EKSİLTME</span>` : '';
+        const kumBitis = isDuz ? sp.kumDuz : sp.kumDevrikBitis;
+        rows += `
+          <tr class="${sp.kanalVar ? rowClass : sp.sonSpir ? 'row-son' : ''}">
+            <td>${hi+1}</td>
+            <td>${sp.s} ${badge}${sonBadge}</td>
+            <td>${fmt(sp.ortaCap, 1)}</td>
+            <td>${fmt(sp.spirBoy, 1)}</td>
+            <td style="color:${renk}">${fmt(kumBitis/1000, 4)}</td>
+            <td>${kanalBasCell}</td>
+            <td>${kanalBitCell}</td>
+          </tr>`;
+      });
+    });
+
+    return `
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>Halka</th>
+            <th>Spir</th>
+            <th>Orta Çap (mm)</th>
+            <th>Spir Boyu (mm)</th>
+            <th>Küm. Metre (m)</th>
+            <th>Kanal Başlangıç (mm)</th>
+            <th>Kanal Bitiş (mm)</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <div class="hint" style="margin-top:8px;">
+        ${isDuz ? '🔵 Mavi satır = kanal bandı olan spir (iç→dış yön)' : '🟣 Mor satır = kanal bandı olan spir (dış→iç yön — ayna)'}
+        &nbsp;|&nbsp; 🔴 Kırmızı satır = eksiltmeli son spir
+      </div>`;
+  }
+
+  const tabs = `
+    <div class="tabs">
+      <button class="tab-btn active-duz" id="tab-btn-duz" onclick="aktifTab('duz')">🔵 DÜZ SARGI</button>
+      <button class="tab-btn" id="tab-btn-devrik" onclick="aktifTab('devrik')">🟣 DEVRİK SARGI</button>
+    </div>
+    <div class="tab-content active" id="tab-duz">${buildTable('duz')}</div>
+    <div class="tab-content" id="tab-devrik">${buildTable('devrik')}</div>
+  `;
+
+  document.getElementById('resultsBody').innerHTML = ozet + tabs;
+}
+
+halkaEkle();
+</script>
+</body>
+</html>

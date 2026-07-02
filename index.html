@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<title>Fabrika Asistanı</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  
+  html, body {
+    background: #0d1117;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-family: 'IBM Plex Sans', sans-serif;
+    /* Ekranı dikey eksende iki parçaya bölüyoruz: Üst içerik ve alt menü */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* İç sayfaların açılacağı alan - Kalan tüm dikey boşluğu otomatik kaplar */
+  #app-frame { 
+    flex: 1;
+    width: 100%;
+    border: none; 
+    background: #0f1117;
+  }
+
+  /* Alt menü alanı - Sabit yüksekliktedir ve asla ekranın altına taşamaz */
+  .bottom-nav { 
+    height: 65px;
+    width: 100%;
+    display: flex; 
+    background: #161b22; 
+    border-top: 1px solid #30363d; 
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .nav-item { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    color: #8b949e; 
+    font-size: 11px; 
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  
+  .nav-icon { 
+    font-size: 22px; 
+    margin-bottom: 4px; 
+    transition: transform 0.2s;
+  }
+  
+  .nav-item.active { color: #f59e0b; }
+  .nav-item.active .nav-icon { transform: scale(1.15); }
+</style>
+</head>
+<body>
+
+  <iframe id="app-frame" src="mesai.html"></iframe>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="loadApp('arsiv.html', this)">
+      <span class="nav-icon">📚</span>
+      <span>ARŞİV</span>
+    </div>
+    <div class="nav-item active" onclick="loadApp('mesai.html', this)">
+      <span class="nav-icon">⏱️</span>
+      <span>MESAİ</span>
+    </div>
+    <div class="nav-item" onclick="loadApp('hesaplama.html', this)">
+      <span class="nav-icon">⚡</span>
+      <span>HESAPLAMA</span>
+    </div>
+  </div>
+
+  <script>
+    function loadApp(url, btn) {
+      document.getElementById('app-frame').src = url;
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>

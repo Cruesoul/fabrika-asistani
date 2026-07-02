@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0d1117">
+<title>Bobin Arşiv</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { background: #0d1117; color: #e6edf3; font-family: 'Courier New', monospace; max-width: 480px; margin: 0 auto; min-height: 100vh; padding-bottom: 90px; }
+
+.header { background: linear-gradient(135deg, #1a2332 0%, #0d1117 100%); border-bottom: 2px solid #f59e0b; padding: 14px 16px 10px; position: sticky; top: 0; z-index: 100; }
+.header-title { font-size: 13px; letter-spacing: 4px; color: #f59e0b; font-weight: bold; }
+.header-sub { font-size: 10px; color: #8b949e; letter-spacing: 2px; margin-top: 2px; }
+.header-row { display: flex; align-items: center; justify-content: space-between; }
+.header-user { font-size: 10px; color: #3fb950; letter-spacing: 1px; margin-top: 3px; }
+.header-btns { display: flex; gap: 6px; align-items: center; }
+.icon-btn { background: none; border: 1px solid #30363d; border-radius: 5px; color: #8b949e; font-family: inherit; font-size: 10px; letter-spacing: 1px; padding: 5px 9px; cursor: pointer; }
+.icon-btn:active { background: #161b22; }
+.icon-btn.gold { border-color: #f59e0b55; color: #f59e0b; }
+
+/* ANA SAYFA */
+.home-wrap { padding: 24px 16px; display: flex; flex-direction: column; gap: 20px; }
+.home-search-box { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 16px; }
+.home-search-title { font-size: 10px; letter-spacing: 3px; color: #8b949e; text-transform: uppercase; margin-bottom: 10px; }
+.search-input-row { display: flex; align-items: center; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 10px 12px; gap: 8px; }
+.search-input-row input { background: none; border: none; outline: none; color: #e6edf3; font-family: inherit; font-size: 14px; flex: 1; }
+.search-input-row .s-icon { font-size: 18px; color: #8b949e; }
+.search-hint { font-size: 10px; color: #484f58; letter-spacing: 1px; margin-top: 8px; line-height: 1.6; }
+.search-result-area { margin-top: 4px; }
+
+.home-nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.nav-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 18px 14px; cursor: pointer; text-align: center; transition: border-color 0.2s; }
+.nav-card:active { background: #21262d; }
+.nav-card.accent { border-color: #f59e0b44; }
+.nav-card.green { border-color: #3fb95044; }
+.nav-card .nc-icon { font-size: 28px; margin-bottom: 8px; }
+.nav-card .nc-title { font-size: 11px; letter-spacing: 2px; color: #e6edf3; font-weight: bold; }
+.nav-card .nc-sub { font-size: 10px; color: #8b949e; margin-top: 3px; letter-spacing: 1px; }
+.nav-card.accent .nc-title { color: #f59e0b; }
+.nav-card.green .nc-title { color: #3fb950; }
+
+.home-stats { display: flex; gap: 10px; }
+.home-stat { flex: 1; background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 12px; text-align: center; }
+.home-stat .hs-val { font-size: 22px; font-weight: bold; color: #f59e0b; }
+.home-stat .hs-lbl { font-size: 9px; color: #8b949e; letter-spacing: 2px; margin-top: 3px; }
+.home-stat.pending-stat .hs-val { color: #f59e0b; }
+
+/* ARAMA SONUÇLARI */
+.result-label { font-size: 10px; letter-spacing: 2px; color: #8b949e; padding: 10px 0 6px; text-transform: uppercase; }
+.no-result { text-align: center; padding: 20px; color: #484f58; font-size: 12px; }
+.spinner { text-align: center; padding: 20px; color: #8b949e; font-size: 12px; letter-spacing: 2px; }
+
+/* LİSTE */
+.list-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #21262d; cursor: pointer; }
+.list-item:active { background: #161b22; }
+.list-item.inset { padding: 10px 0; border-bottom: 1px solid #21262d; }
+.list-thumb { width: 54px; height: 54px; border-radius: 6px; object-fit: cover; border: 2px solid #30363d; flex-shrink: 0; background: #161b22; }
+.list-thumb-ph { width: 54px; height: 54px; border-radius: 6px; border: 2px solid #30363d; background: #161b22; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.list-resimno { font-size: 14px; font-weight: bold; color: #f59e0b; letter-spacing: 2px; }
+.list-guc { font-size: 12px; color: #e6edf3; margin-top: 2px; }
+.list-meta { font-size: 10px; color: #8b949e; margin-top: 2px; }
+.list-info { flex: 1; min-width: 0; }
+.list-arrow { color: #484f58; font-size: 18px; margin-left: auto; flex-shrink: 0; }
+.badge { display: inline-block; border-radius: 3px; font-size: 9px; padding: 1px 5px; letter-spacing: 1px; margin-left: 5px; vertical-align: middle; font-weight: bold; }
+.badge-pending { background: #2d2200; border: 1px solid #f59e0b; color: #f59e0b; }
+.badge-mine { background: #0d2318; border: 1px solid #3fb950; color: #3fb950; }
+
+.empty { text-align: center; padding: 50px 30px; color: #484f58; }
+.empty-icon { font-size: 42px; }
+.empty-title { font-size: 13px; margin-top: 12px; letter-spacing: 1px; }
+.empty-sub { font-size: 11px; margin-top: 6px; line-height: 1.7; }
+
+/* ARŞİV */
+.archive-header-bar { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #21262d; }
+.archive-count { font-size: 11px; color: #8b949e; letter-spacing: 1px; }
+.archive-count span { color: #f59e0b; font-weight: bold; }
+.pagination-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-top: 1px solid #21262d; gap: 8px; }
+.page-btn { background: #161b22; border: 1px solid #30363d; border-radius: 6px; color: #e6edf3; font-family: inherit; font-size: 11px; padding: 8px 16px; cursor: pointer; letter-spacing: 1px; }
+.page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.page-btn:active:not(:disabled) { background: #21262d; }
+.page-info { font-size: 11px; color: #8b949e; letter-spacing: 1px; }
+
+.fab { position: fixed; bottom: 24px; right: 50%; transform: translateX(calc(50% + (min(100vw,480px)/2) - 36px - 16px)); width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; color: #0d1117; font-size: 30px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(245,158,11,0.4); z-index: 200; }
+
+.page { display: none; }
+.page.active { display: block; }
+.back-btn { background: none; border: none; color: #f59e0b; font-family: inherit; font-size: 12px; cursor: pointer; letter-spacing: 2px; padding: 12px 16px; display: flex; align-items: center; gap: 6px; }
+
+.form { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+.form-label { font-size: 10px; letter-spacing: 2px; color: #8b949e; text-transform: uppercase; margin-bottom: 6px; display: block; }
+.form-input, .form-select, .form-textarea { width: 100%; background: #161b22; border: 1px solid #30363d; border-radius: 6px; color: #e6edf3; font-family: inherit; font-size: 13px; padding: 9px 12px; outline: none; }
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: #f59e0b; }
+.form-select option { background: #161b22; }
+.form-textarea { resize: vertical; min-height: 70px; }
+
+.cam-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.cam-btn { flex: 1; background: #161b22; border: 1px solid #30363d; border-radius: 6px; color: #e6edf3; font-family: inherit; font-size: 12px; padding: 10px 4px; cursor: pointer; text-align: center; letter-spacing: 1px; }
+.cam-btn:active { background: #21262d; }
+.img-placeholder { border: 2px dashed #30363d; border-radius: 8px; background: #161b22; padding: 20px; text-align: center; color: #8b949e; font-size: 11px; line-height: 1.8; }
+.img-placeholder span { font-size: 28px; display: block; margin-bottom: 6px; }
+.img-preview-box { display: none; position: relative; }
+.img-preview-box img { width: 100%; border-radius: 8px; border: 2px solid #f59e0b; object-fit: contain; max-height: 260px; }
+.img-change-btn { position: absolute; top: 8px; right: 8px; background: #0d1117cc; border: 1px solid #30363d; border-radius: 4px; color: #8b949e; font-family: inherit; font-size: 10px; padding: 4px 8px; cursor: pointer; }
+
+.btn-primary { background: linear-gradient(135deg, #f59e0b, #d97706); color: #0d1117; border: none; border-radius: 6px; padding: 13px 0; font-family: inherit; font-size: 13px; font-weight: bold; letter-spacing: 2px; cursor: pointer; width: 100%; }
+.btn-outline { background: none; color: #8b949e; border: 1px solid #30363d; border-radius: 6px; padding: 11px 0; font-family: inherit; font-size: 12px; cursor: pointer; width: 100%; letter-spacing: 1px; }
+.btn-danger { background: none; color: #f85149; border: 1px solid #f85149; border-radius: 6px; padding: 11px 0; font-family: inherit; font-size: 12px; cursor: pointer; width: 100%; }
+.btn-green { background: none; color: #3fb950; border: 1px solid #3fb950; border-radius: 6px; padding: 11px 0; font-family: inherit; font-size: 12px; cursor: pointer; width: 100%; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-outline:active { background: #161b22; }
+.btn-row { display: flex; gap: 8px; }
+.btn-row .btn-green, .btn-row .btn-danger { flex: 1; }
+
+.error-box { background: #2d1f1f; border: 1px solid #f85149; border-radius: 6px; padding: 10px 14px; color: #f85149; font-size: 12px; display: none; }
+.info-box { background: #1a2332; border: 1px solid #f59e0b33; border-radius: 6px; padding: 10px 14px; color: #8b949e; font-size: 11px; line-height: 1.7; }
+.info-box strong { color: #f59e0b; }
+
+.detail-img { width: 100%; object-fit: contain; max-height: 320px; background: #161b22; cursor: zoom-in; display: block; }
+.detail-badge { display: inline-block; background: #1a2332; border: 1px solid #f59e0b; color: #f59e0b; border-radius: 4px; padding: 3px 10px; font-size: 13px; letter-spacing: 2px; font-weight: bold; margin: 10px 16px 0; }
+.status-banner { margin: 10px 16px; padding: 8px 12px; border-radius: 6px; font-size: 11px; letter-spacing: 1px; }
+.status-banner.pending { background: #2d2200; border: 1px solid #f59e0b; color: #f59e0b; }
+.status-banner.approved { background: #0d2318; border: 1px solid #3fb950; color: #3fb950; }
+.detail-field { padding: 10px 16px; border-bottom: 1px solid #21262d; }
+.detail-field-label { font-size: 9px; letter-spacing: 3px; color: #8b949e; text-transform: uppercase; }
+.detail-field-val { font-size: 14px; color: #e6edf3; margin-top: 3px; font-weight: bold; }
+.detail-field-val.normal { font-weight: normal; font-size: 13px; }
+.detail-actions { padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+.section-title { padding: 10px 16px 6px; font-size: 9px; letter-spacing: 3px; color: #484f58; text-transform: uppercase; border-top: 1px solid #21262d; margin-top: 4px; }
+
+.login-wrap { padding: 36px 24px; display: flex; flex-direction: column; gap: 18px; }
+.login-logo { font-size: 52px; text-align: center; }
+.login-title { font-size: 16px; letter-spacing: 4px; color: #f59e0b; font-weight: bold; text-align: center; }
+.login-sub { font-size: 11px; color: #8b949e; text-align: center; line-height: 1.7; }
+
+.settings-page { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+.settings-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 14px; }
+.settings-card-title { font-size: 11px; letter-spacing: 2px; color: #f59e0b; text-transform: uppercase; margin-bottom: 10px; }
+.settings-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; font-size: 11px; border-bottom: 1px solid #21262d; }
+.settings-row:last-child { border-bottom: none; }
+.settings-row .lbl { color: #8b949e; }
+.settings-row .val { color: #e6edf3; font-weight: bold; }
+.settings-row .val.ok { color: #3fb950; }
+
+.loading-screen { position: fixed; inset: 0; background: #0d1117; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
+.loading-screen .icon { font-size: 48px; margin-bottom: 16px; }
+.loading-screen .txt { font-size: 12px; letter-spacing: 3px; color: #8b949e; }
+.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #3fb950; color: #0d1117; font-family: inherit; font-size: 12px; font-weight: bold; letter-spacing: 1px; padding: 10px 22px; border-radius: 20px; z-index: 9999; display: none; white-space: nowrap; max-width: 90vw; text-align: center; }
+.toast.err { background: #f85149; color: #fff; }
+.exit-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #30363d; color: #e6edf3; font-family: inherit; font-size: 12px; font-weight: bold; letter-spacing: 1px; padding: 12px 24px; border-radius: 20px; z-index: 9999; display: none; white-space: nowrap; border: 1px solid #f59e0b; }
+.lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.96); z-index: 9998; display: none; align-items: center; justify-content: center; overflow: hidden; touch-action: none; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; transform-origin: center center; transition: transform 0.1s ease; user-select: none; -webkit-user-select: none; }
+.lightbox-close { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.15); border: none; border-radius: 50%; width: 36px; height: 36px; color: #fff; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; }
+.lightbox-hint { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.5); color: #8b949e; font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 1px; padding: 6px 14px; border-radius: 12px; pointer-events: none; transition: opacity 0.5s; }
+.setup-banner { background: #2d1a00; border: 1px solid #f59e0b; border-radius: 8px; padding: 14px; font-size: 11px; color: #f59e0b; line-height: 1.8; }
+.setup-banner strong { color: #fff; display: block; margin-bottom: 4px; font-size: 12px; }
+.setup-banner code { background: #0d1117; border-radius: 3px; padding: 1px 5px; color: #e6edf3; }
+</style>
+</head>
+<body>
+
+<div class="loading-screen" id="loading-screen">
+  <div class="icon">⚡</div>
+  <div class="txt" id="loading-txt">BOBİN ARŞİV YÜKLENİYOR...</div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="exit-toast" id="exit-toast">⚠ Çıkmak için tekrar geri tuşuna basın</div>
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="">
+  <div class="lightbox-hint" id="lightbox-hint">İki parmakla zoom · Çift tıkla büyüt · ✕ ile kapat</div>
+</div>
+
+<!-- ══════════ GİRİŞ ══════════ -->
+<div class="page" id="page-login">
+  <div class="header">
+    <div class="header-title">⚡ BOBİN ARŞİV</div>
+    <div class="header-sub">KULLANICI GİRİŞİ</div>
+  </div>
+  <div class="login-wrap">
+    <div class="login-logo">⚡</div>
+    <div class="login-title">BOBİN ARŞİV</div>
+    <div class="login-sub">Adınızı girin ve arşive bağlanın.<br>Eklediğiniz kayıtlar admin onayıyla yayınlanır.</div>
+    <div id="setup-banner-wrap"></div>
+    <div class="error-box" id="login-error"></div>
+    <div>
+      <label class="form-label">Adınız Soyadınız *</label>
+      <input class="form-input" id="login-name" type="text" placeholder="örn: Ahmet Yılmaz" maxlength="40">
+    </div>
+    <div>
+      <label class="form-label">Admin Şifresi <span style="color:#484f58;font-size:9px">(sadece admin girer)</span></label>
+      <input class="form-input" id="login-admin-pass" type="password" placeholder="Admin değilseniz boş bırakın">
+    </div>
+    <button class="btn-primary" onclick="doLogin()">GİRİŞ YAP →</button>
+    <div class="info-box">
+      <strong>ℹ Nasıl çalışır?</strong><br>
+      Kayıtlarınız önce <strong>Beklemede</strong> görünür. Admin onayladıktan sonra herkese açılır. Adınız her kayıtta görünür.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ANA SAYFA ══════════ -->
+<div class="page" id="page-home">
+  <div class="header">
+    <div class="header-row">
+      <div>
+        <div class="header-title">⚡ BOBİN ARŞİV</div>
+        <div class="header-sub">ÖLÇÜ KAĞIDI ARŞİVİ</div>
+        <div class="header-user" id="header-user"></div>
+      </div>
+      <div class="header-btns">
+        <button class="icon-btn gold" id="admin-btn" onclick="showAdminPanel()" style="display:none">👑 ADMİN</button>
+        <button class="icon-btn" onclick="showSettings()">⚙</button>
+        <button class="icon-btn" onclick="doLogout()">çıkış</button>
+      </div>
+    </div>
+  </div>
+  <div class="home-wrap">
+    <!-- İstatistik -->
+    <div class="home-stats">
+      <div class="home-stat">
+        <div class="hs-val" id="home-stat-approved">—</div>
+        <div class="hs-lbl">ONAYLANMIŞ</div>
+      </div>
+      <div class="home-stat pending-stat" id="home-stat-pending-wrap" style="display:none">
+        <div class="hs-val" id="home-stat-pending">0</div>
+        <div class="hs-lbl">BEKLEMEDE</div>
+      </div>
+      <div class="home-stat">
+        <div class="hs-val" id="home-stat-mine">—</div>
+        <div class="hs-lbl">BENİM</div>
+      </div>
+    </div>
+
+    <!-- Arama -->
+    <div class="home-search-box">
+      <div class="home-search-title">🔍 ÖLÇÜ ARA</div>
+      <div class="search-input-row">
+        <input type="text" id="home-search" placeholder="Resim no, güç, gerilim, kişi adı..." onkeydown="if(event.key==='Enter'){triggerSearch()}" style="ime-mode:auto">
+        <span id="home-search-clear" onclick="clearHomeSearch()" style="color:#8b949e;cursor:pointer;font-size:14px;display:none;padding:0 4px">✕</span>
+        <button onclick="triggerSearch()" style="background:linear-gradient(135deg,#f59e0b,#d97706);border:none;border-radius:5px;color:#0d1117;font-family:inherit;font-size:12px;font-weight:bold;padding:6px 12px;cursor:pointer;letter-spacing:1px;white-space:nowrap">ARA</button>
+      </div>
+      <div class="search-hint">Resim numarası (620XXXX), güç değeri, gerilim türü veya kaydeden kişi adı ile arayın.</div>
+      <div class="search-result-area" id="search-result-area"></div>
+    </div>
+
+    <!-- Navigasyon -->
+    <div class="home-nav-grid">
+      <div class="nav-card accent" onclick="showArchive()">
+        <div class="nc-icon">📚</div>
+        <div class="nc-title">ARŞİV</div>
+        <div class="nc-sub">Tüm ölçüler</div>
+      </div>
+      <div class="nav-card green" onclick="showAdd()">
+        <div class="nc-icon">➕</div>
+        <div class="nc-title">YENİ KAYIT</div>
+        <div class="nc-sub">Ölçü ekle</div>
+      </div>
+      <div class="nav-card" onclick="showMyRecords()">
+        <div class="nc-icon">📋</div>
+        <div class="nc-title">KAYITLARIM</div>
+        <div class="nc-sub">Gönderdiğim</div>
+      </div>
+      <div class="nav-card" onclick="showSettings()">
+        <div class="nc-icon">⚙️</div>
+        <div class="nc-title">AYARLAR</div>
+        <div class="nc-sub">Yedek & Hesap</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ARŞİV ══════════ -->
+<div class="page" id="page-archive">
+  <div class="header">
+    <div class="header-title">⚡ BOBİN ARŞİV</div>
+    <div class="header-sub">📚 ONAYLANMIŞ ÖLÇÜLER</div>
+  </div>
+  <button class="back-btn" onclick="showPage('home')">← ANA SAYFA</button>
+  <div class="archive-header-bar">
+    <div class="archive-count">Toplam: <span id="archive-total">—</span> kayıt</div>
+    <div class="archive-count">Sayfa <span id="archive-page-num">1</span></div>
+  </div>
+  <div id="archive-container">
+    <div class="spinner">YÜKLENİYOR...</div>
+  </div>
+  <div class="pagination-row" id="pagination-row">
+    <button class="page-btn" id="prev-btn" onclick="archivePrev()" disabled>← ÖNCEKİ</button>
+    <div class="page-info" id="page-info">— / —</div>
+    <button class="page-btn" id="next-btn" onclick="archiveNext()">SONRAKİ →</button>
+  </div>
+</div>
+
+<!-- ══════════ BENİM KAYITLARIM ══════════ -->
+<div class="page" id="page-mine">
+  <div class="header">
+    <div class="header-title">⚡ BOBİN ARŞİV</div>
+    <div class="header-sub">📋 BENİM KAYITLARIM</div>
+  </div>
+  <button class="back-btn" onclick="showPage('home')">← ANA SAYFA</button>
+  <div id="mine-container">
+    <div class="spinner">YÜKLENİYOR...</div>
+  </div>
+</div>
+
+<!-- ══════════ KAYIT EKLE ══════════ -->
+<div class="page" id="page-add">
+  <div class="header">
+    <div class="header-title">⚡ BOBİN ARŞİV</div>
+    <div class="header-sub">YENİ KAYIT EKLE</div>
+  </div>
+  <button class="back-btn" onclick="showPage('home')">← ANA SAYFA</button>
+  <div class="form">
+    <div class="info-box">Kayıt adınızla birlikte <strong>onaya gönderilir</strong>. Admin onayladıktan sonra herkese açılır.</div>
+    <div class="error-box" id="add-error"></div>
+    <div>
+      <label class="form-label">Ölçü Resmi *</label>
+      <div class="cam-row">
+        <button class="cam-btn" onclick="document.getElementById('add-cam').click()">📷 KAMERA</button>
+        <button class="cam-btn" onclick="document.getElementById('add-file').click()">🖼 GALERİ</button>
+      </div>
+      <input type="file" accept="image/*" capture="environment" id="add-cam" style="display:none" onchange="handleImage(this,'add')">
+      <input type="file" accept="image/*" id="add-file" style="display:none" onchange="handleImage(this,'add')">
+      <div class="img-placeholder" id="add-img-ph"><span>📄</span>Ölçü kağıdını fotoğraflayın veya galeriden seçin</div>
+      <div class="img-preview-box" id="add-img-box">
+        <img id="add-img-prev" src="" alt="">
+        <button class="img-change-btn" onclick="document.getElementById('add-file').click()">değiştir</button>
+      </div>
+    </div>
+    <div>
+      <label class="form-label">Resim Numarası * (620XXXX)</label>
+      <input class="form-input" type="number" id="add-resimno" placeholder="örn: 6201986">
+    </div>
+    <div>
+      <label class="form-label">Bobinin Gücü *</label>
+      <input class="form-input" type="text" id="add-guc" placeholder="örn: 250 MVA, 33,5 MVA...">
+    </div>
+    <div>
+      <label class="form-label">Gerilim Türü *</label>
+      <select class="form-select" id="add-gerilim">
+        <option value="">-- Gerilim Türü Seçin --</option>
+        <option>AG</option><option>YG</option><option>AYAR</option>
+        <option>İNCE AYAR</option><option>KABA AYAR</option><option>TW</option><option>OG</option>
+      </select>
+    </div>
+    <div>
+      <label class="form-label">Notlar (İsteğe Bağlı)</label>
+      <textarea class="form-textarea" id="add-notlar" placeholder="Ek bilgiler..."></textarea>
+    </div>
+    <button class="btn-primary" id="add-btn" onclick="saveRecord()">📤 ONAYA GÖNDER</button>
+    <button class="btn-outline" onclick="showPage('home')">İPTAL</button>
+  </div>
+</div>
+
+<!-- ══════════ DETAY ══════════ -->
+<div class="page" id="page-detail">
+  <div class="header">
+    <div class="header-title">⚡ BOBİN ARŞİV</div>
+    <div class="header-sub">ÖLÇÜ DETAYI</div>
+  </div>
+  <button class="back-btn" onclick="goBackFromDetail()">← GERİ DÖN</button>
+  <img class="detail-img" id="detail-img" src="" alt="" onclick="openLightbox(this.src)">
+  <div class="detail-badge" id="detail-badge"></div>
+  <div class="status-banner" id="detail-status"></div>
+  <div class="detail-field"><div class="detail-field-label">Resim Numarası</div><div class="detail-field-val" id="d-resimno"></div></div>
+  <div class="detail-field"><div class="detail-field-label">Bobinin Gücü</div><div class="detail-field-val" id="d-guc"></div></div>
+  <div class="detail-field"><div class="detail-field-label">Gerilim Türü</div><div class="detail-field-val" id="d-gerilim"></div></div>
+  <div class="detail-field" id="d-notlar-wrap"><div class="detail-field-label">Notlar</div><div class="detail-field-val normal" id="d-notlar"></div></div>
+  <div class="detail-field"><div class="detail-field-label">Kaydeden</div><div class="detail-field-val normal" id="d-user"></div></div>
+  <div class="detail-field"><div class="detail-field-label">Tarih</div><div class="detail-field-val normal" id="d-tarih"></div></div>
+  <div id="admin-actions" style="display:none">
+    <div class="section-title">👑 ADMİN İŞLEMLERİ</div>
+    <div class="detail-actions">
+      <button class="btn-primary" onclick="showEditPanel()">✏️ DÜZENLE</button>
+      <div class="btn-row">
+        <button class="btn-green" onclick="approveRecord()">✅ ONAYLA</button>
+        <button class="btn-danger" onclick="rejectRecord()">❌ REDDET & SİL</button>
+      </div>
+    </div>
+  </div>
+  <div id="admin-approved-actions" style="display:none">
+    <div class="section-title">👑 ADMİN İŞLEMLERİ</div>
+    <div class="detail-actions">
+      <button class="btn-primary" onclick="showEditPanel()">✏️ DÜZENLE</button>
+      <button class="btn-danger" onclick="rejectRecord()">🗑 SİL</button>
+    </div>
+  </div>
+  <div class="detail-actions" style="padding-top:0">
+    <button class="btn-outline" onclick="goBackFromDetail()">GERİ DÖN</button>
+  </div>
+</div>
+
+<!-- ══════════ DÜZENLE ══════════ -->
+<div class="page" id="page-edit">
+  <div class="header">
+    <div class="header-title">⚡ BOBİN ARŞİV</div>
+    <div class="header-sub">👑 KAYIT DÜZENLE</div>
+  </div>
+  <button class="back-btn" onclick="showPage('detail')">← GERİ DÖN</button>
+  <div class="form">
+    <div class="error-box" id="edit-error"></div>
+    <div>
+      <label class="form-label">Ölçü Resmi</label>
+      <div class="cam-row">
+        <button class="cam-btn" onclick="document.getElementById('edit-cam').click()">📷 YENİ KAMERA</button>
+        <button class="cam-btn" onclick="document.getElementById('edit-file').click()">🖼 YENİ GALERİ</button>
+      </div>
+      <input type="file" accept="image/*" capture="environment" id="edit-cam" style="display:none" onchange="handleImage(this,'edit')">
+      <input type="file" accept="image/*" id="edit-file" style="display:none" onchange="handleImage(this,'edit')">
+      <div class="img-preview-box" id="edit-img-box" style="display:block">
+        <img id="edit-img-prev" src="" alt="">
+        <button class="img-change-btn" onclick="document.getElementById('edit-file').click()">değiştir</button>
+      </div>
+    </div>
+    <div>
+      <label class="form-label">Resim Numarası *</label>
+      <input class="form-input" type="number" id="edit-resimno">
+    </div>
+    <div>
+      <label class="form-label">Bobinin Gücü *</label>
+      <input class="form-input" type="text" id="edit-guc">
+    </div>
+    <div>
+      <label class="form-label">Gerilim Türü *</label>
+      <select class="form-select" id="edit-gerilim">
+        <option value="">-- Seçin --</option>
+        <option>AG</option><option>YG</option><option>AYAR</option>
+        <option>İNCE AYAR</option><option>KABA AYAR</option><option>TW</option><option>OG</option>
+      </select>
+    </div>
+    <div>
+      <label class="form-label">Notlar</label>
+      <textarea class="form-textarea" id="edit-notlar"></textarea>
+    </div>
+    <div>
+      <label class="form-label">Kaydeden Kişi</label>
+      <input class="form-input" type="text" id="edit-user">
+    </div>
+    <button class="btn-primary" id="edit-btn" onclick="saveEdit()">💾 KAYDET</button>
+    <button class="btn-outline" onclick="showPage('detail')">İPTAL</button>
+  </div>
+</div>
+
+<!-- ══════════ ADMİN PANELİ ══════════ -->
+<div class="page" id="page-admin">
+  <div class="header">
+    <div class="header-title">⚡ BOBİN ARŞİV</div>
+    <div class="header-sub">👑 ONAY BEKLEYENLERİ</div>
+  </div>
+  <button class="back-btn" onclick="showPage('home')">← ANA SAYFA</button>
+  <div id="pending-container"></div>
+</div>
+
+<!-- ══════════ AYARLAR ══════════ -->
+<div class="page" id="page-settings">
+  <div class="header">
+    <div class="header-title">⚡ BOBİN ARŞİV</div>
+    <div class="header-sub">AYARLAR & YEDEK</div>
+  </div>
+  <button class="back-btn" onclick="showPage('home')">← ANA SAYFA</button>
+  <div class="settings-page">
+    <div class="settings-card">
+      <div class="settings-card-title">👤 KULLANICI</div>
+      <div class="settings-row"><span class="lbl">AD SOYAD</span><span class="val" id="s-name">-</span></div>
+      <div class="settings-row"><span class="lbl">ROL</span><span class="val ok" id="s-role">-</span></div>
+      <div class="settings-row"><span class="lbl">BAĞLANTI</span><span class="val ok">Firebase ✓</span></div>
+    </div>
+    <div class="settings-card">
+      <div class="settings-card-title">🔄 OTURUM</div>
+      <p style="font-size:11px;color:#8b949e;line-height:1.7;margin-bottom:12px;">Farklı bir isimle giriş yapmak için çıkış yapın.</p>
+      <button class="btn-outline" onclick="doLogout()">çıkış yap</button>
+    </div>
+    <div class="settings-card" id="export-card" style="display:none">
+      <div class="settings-card-title">📤 YEDEK AL</div>
+      <p style="font-size:11px;color:#8b949e;line-height:1.7;margin-bottom:12px;">Tüm onaylı kayıtları .bobin dosyasına indir. Google Drive veya WhatsApp ile paylaşın.</p>
+      <button class="btn-green" onclick="exportBackup()">⬇ YEDEK DOSYASI İNDİR</button>
+    </div>
+    <div class="settings-card" id="import-card" style="display:none">
+      <div class="settings-card-title">📥 YEDEKten GERİ YÜKLE</div>
+      <p style="font-size:11px;color:#8b949e;line-height:1.7;margin-bottom:12px;">Eski .bobin yedeğini Firebase'e yükle. Sadece admin.</p>
+      <div style="border:2px dashed #30363d;border-radius:8px;background:#0d1117;padding:16px;text-align:center;color:#8b949e;font-size:11px;cursor:pointer;" onclick="document.getElementById('restore-input').click()">📂 .bobin dosyası seç</div>
+      <input type="file" accept=".bobin,.json" id="restore-input" style="display:none" onchange="importBackup(this)">
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+// ╔══════════════════════════════════════════╗
+// ║  🔧 FİREBASE BİLGİLERİNİ BURAYA GİR   ║
+// ╚══════════════════════════════════════════╝
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyDyXQqA-SGX_ciAG4PHAXYLuWggnYVBZ3o",
+  authDomain:        "olculer-2.firebaseapp.com",
+  projectId:         "olculer-2",
+  storageBucket:     "olculer-2.firebasestorage.app",
+  messagingSenderId: "1010507413787",
+  appId:             "1:1010507413787:web:531b8ec3226dc64419bbbe"
+};
+const ADMIN_PASSWORD = "best2024";
+const PAGE_SIZE = 10;
+// ════════════════════════════════════════════
+
+let db = null;
+let currentUser = null;
+let isAdmin = false;
+let currentDetailId = null;
+let detailFromPage = "home";
+let addImage = null;
+let editImage = null;
+
+// Arşiv sayfalama
+let archiveCursor = null;       // son doküman (sonraki sayfa için)
+let archiveStack = [];          // önceki sayfalar için cursor stack
+let archiveTotalCount = null;
+let archiveCurrentPage = 1;
+
+const FIREBASE_READY = FIREBASE_CONFIG.apiKey !== "BURAYA_API_KEY";
+
+function initFirebase() {
+  if (!FIREBASE_READY) return false;
+  try { firebase.initializeApp(FIREBASE_CONFIG); db = firebase.firestore(); return true; }
+  catch(e) { return false; }
+}
+
+function showToast(msg, isErr) {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.className = "toast" + (isErr ? " err" : "");
+  t.style.display = "block";
+  setTimeout(() => t.style.display = "none", 3000);
+}
+
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page-" + id).classList.add("active");
+  window.scrollTo(0, 0);
+  if (id !== "login") history.pushState({ app: true }, "");
+}
+
+// ── GİRİŞ ──────────────────────────────────
+async function doLogin() {
+  const name = document.getElementById("login-name").value.trim();
+  const pass = document.getElementById("login-admin-pass").value;
+  const errEl = document.getElementById("login-error");
+  errEl.style.display = "none";
+  if (name.length < 2) { errEl.textContent = "⚠ Adınızı soyadınızı girin (en az 2 karakter)."; errEl.style.display = "block"; return; }
+  if (!FIREBASE_READY) { errEl.textContent = "⚠ Firebase kurulmamış."; errEl.style.display = "block"; return; }
+  isAdmin = (pass === ADMIN_PASSWORD);
+  currentUser = name;
+  localStorage.setItem("bobin_user", name);
+  localStorage.setItem("bobin_admin", isAdmin ? "1" : "0");
+  await showHome();
+}
+
+function doLogout() {
+  localStorage.removeItem("bobin_user");
+  localStorage.removeItem("bobin_admin");
+  currentUser = null; isAdmin = false;
+  document.getElementById("login-name").value = "";
+  document.getElementById("login-admin-pass").value = "";
+  showPage("login");
+}
+
+// ── ANA SAYFA ───────────────────────────────
+async function showHome() {
+  document.getElementById("loading-txt").textContent = "YÜKLENİYOR...";
+  document.getElementById("loading-screen").style.display = "flex";
+
+  // Sadece sayıları çek (veri indirme yok)
+  try {
+    const approvedSnap = await db.collection("records").where("status","==","approved").get();
+    const mineSnap = await db.collection("records").where("submittedBy","==",currentUser).get();
+    const pendingSnap = isAdmin ? await db.collection("records").where("status","==","pending").get() : null;
+
+    document.getElementById("home-stat-approved").textContent = approvedSnap.size;
+    document.getElementById("home-stat-mine").textContent = mineSnap.size;
+    archiveTotalCount = approvedSnap.size;
+
+    if (isAdmin && pendingSnap && pendingSnap.size > 0) {
+      document.getElementById("home-stat-pending").textContent = pendingSnap.size;
+      document.getElementById("home-stat-pending-wrap").style.display = "block";
+    }
+  } catch(e) { console.error(e); }
+
+  document.getElementById("loading-screen").style.display = "none";
+  document.getElementById("header-user").textContent = "👤 " + currentUser + (isAdmin ? "  👑" : "");
+  document.getElementById("admin-btn").style.display = isAdmin ? "block" : "none";
+  document.getElementById("s-name").textContent = currentUser;
+  document.getElementById("s-role").textContent = isAdmin ? "Admin 👑" : "Kullanıcı";
+  document.getElementById("import-card").style.display = isAdmin ? "block" : "none";
+  document.getElementById("export-card").style.display = isAdmin ? "block" : "none";
+  showPage("home");
+}
+
+// ── ARAMA (sadece arama yapılınca veri çeker) ──
+function triggerSearch() {
+  const q = document.getElementById("home-search").value.trim();
+  document.getElementById("home-search-clear").style.display = q ? "inline" : "none";
+  if (!q) { document.getElementById("search-result-area").innerHTML = ""; return; }
+  document.getElementById("search-result-area").innerHTML = `<div class="spinner">ARANIYOR...</div>`;
+  doSearch(q);
+}
+
+function clearHomeSearch() {
+  document.getElementById("home-search").value = "";
+  document.getElementById("home-search-clear").style.display = "none";
+  document.getElementById("search-result-area").innerHTML = "";
+}
+
+async function doSearch(q) {
+  q = q.toLowerCase().trim();
+  try {
+    // Onaylı tüm kayıtları çek (sadece metadata, resim dahil ama küçük)
+    const snap = await db.collection("records").where("status","==","approved").get();
+    const results = snap.docs
+      .map(d => ({ id: d.id, ...d.data() }))
+      .filter(r =>
+        r.resimNo.toLowerCase().includes(q) ||
+        r.guc.toLowerCase().includes(q) ||
+        r.gerilim.toLowerCase().includes(q) ||
+        (r.submittedBy||"").toLowerCase().includes(q) ||
+        (r.notlar||"").toLowerCase().includes(q)
+      );
+
+    const area = document.getElementById("search-result-area");
+    if (results.length === 0) {
+      area.innerHTML = `<div class="no-result">🔍 "${q}" için sonuç bulunamadı</div>`; return;
+    }
+    area.innerHTML = `<div class="result-label">${results.length} SONUÇ BULUNDU</div>` +
+      results.map(r => `
+        <div class="list-item inset" onclick="showDetail('${r.id}','home')">
+          ${r.image ? `<img class="list-thumb" src="${r.image}" alt="">` : `<div class="list-thumb-ph">📄</div>`}
+          <div class="list-info">
+            <div class="list-resimno">#${r.resimNo}</div>
+            <div class="list-guc">${r.guc} — ${r.gerilim}</div>
+            <div class="list-meta">👤 ${r.submittedBy||"-"} · ${r.tarih}</div>
+          </div>
+          <div class="list-arrow">›</div>
+        </div>`).join("");
+  } catch(e) { document.getElementById("search-result-area").innerHTML = `<div class="no-result">Hata: ${e.message}</div>`; }
+}
+
+// ── ARŞİV (10'ar sayfalama) ─────────────────
+async function showArchive() {
+  archiveStack = []; archiveCursor = null; archiveCurrentPage = 1;
+  showPage("archive");
+  await loadArchivePage(null);
+}
+
+async function loadArchivePage(startAfterDoc) {
+  document.getElementById("archive-container").innerHTML = `<div class="spinner">YÜKLENİYOR...</div>`;
+  document.getElementById("prev-btn").disabled = true;
+  document.getElementById("next-btn").disabled = true;
+
+  try {
+    let query = db.collection("records")
+      .where("status","==","approved")
+      .orderBy("guc")
+      .limit(PAGE_SIZE + 1);
+    if (startAfterDoc) query = query.startAfter(startAfterDoc);
+
+    const snap = await query.get();
+    const hasMore = snap.docs.length > PAGE_SIZE;
+    const docs = snap.docs.slice(0, PAGE_SIZE);
+
+    if (archiveTotalCount !== null) {
+      document.getElementById("archive-total").textContent = archiveTotalCount;
+      const totalPages = Math.ceil(archiveTotalCount / PAGE_SIZE);
+      document.getElementById("page-info").textContent = archiveCurrentPage + " / " + totalPages;
+      document.getElementById("archive-page-num").textContent = archiveCurrentPage;
+    }
+
+    if (docs.length === 0) {
+      document.getElementById("archive-container").innerHTML = `<div class="empty"><div class="empty-icon">📚</div><div class="empty-title">Kayıt bulunamadı</div></div>`;
+      return;
+    }
+
+    archiveCursor = docs[docs.length - 1];
+
+    document.getElementById("archive-container").innerHTML = docs.map(d => {
+      const r = { id: d.id, ...d.data() };
+      return `<div class="list-item" onclick="showDetail('${r.id}','archive')">
+        ${r.image ? `<img class="list-thumb" src="${r.image}" alt="">` : `<div class="list-thumb-ph">📄</div>`}
+        <div class="list-info">
+          <div class="list-resimno">#${r.resimNo}</div>
+          <div class="list-guc">${r.guc} — ${r.gerilim}</div>
+          <div class="list-meta">👤 ${r.submittedBy||"-"} · ${r.tarih}</div>
+        </div>
+        <div class="list-arrow">›</div>
+      </div>`;
+    }).join("");
+
+    document.getElementById("prev-btn").disabled = archiveStack.length === 0;
+    document.getElementById("next-btn").disabled = !hasMore;
+  } catch(e) {
+    document.getElementById("archive-container").innerHTML = `<div class="empty"><div class="empty-title">Hata: ${e.message}</div></div>`;
+  }
+}
+
+async function archiveNext() {
+  archiveStack.push(archiveCursor);
+  archiveCurrentPage++;
+  await loadArchivePage(archiveCursor);
+}
+
+async function archivePrev() {
+  archiveStack.pop();
+  archiveCurrentPage--;
+  const prevCursor = archiveStack.length > 0 ? archiveStack[archiveStack.length - 1] : null;
+  await loadArchivePage(prevCursor);
+}
+
+// ── BENİM KAYITLARIM ────────────────────────
+async function showMyRecords() {
+  showPage("mine");
+  document.getElementById("mine-container").innerHTML = `<div class="spinner">YÜKLENİYOR...</div>`;
+  try {
+    const snap = await db.collection("records").where("submittedBy","==",currentUser).orderBy("timestamp","desc").get();
+    const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (docs.length === 0) {
+      document.getElementById("mine-container").innerHTML = `<div class="empty"><div class="empty-icon">📋</div><div class="empty-title">Henüz kayıt yok</div><div class="empty-sub">Ana sayfadan yeni kayıt ekleyebilirsiniz.</div></div>`;
+      return;
+    }
+    document.getElementById("mine-container").innerHTML = docs.map(r => `
+      <div class="list-item" onclick="showDetail('${r.id}','mine')">
+        ${r.image ? `<img class="list-thumb" src="${r.image}" alt="">` : `<div class="list-thumb-ph">📄</div>`}
+        <div class="list-info">
+          <div class="list-resimno">#${r.resimNo}${r.status==='pending'?'<span class="badge badge-pending">BEKLEMEDE</span>':''}</div>
+          <div class="list-guc">${r.guc} — ${r.gerilim}</div>
+          <div class="list-meta">${r.tarih}</div>
+        </div>
+        <div class="list-arrow">›</div>
+      </div>`).join("");
+  } catch(e) {
+    document.getElementById("mine-container").innerHTML = `<div class="empty"><div class="empty-title">Hata: ${e.message}</div></div>`;
+  }
+}
+
+// ── DETAY ────────────────────────────────────
+async function showDetail(id, fromPage) {
+  detailFromPage = fromPage || "home";
+  document.getElementById("loading-txt").textContent = "YÜKLENIYOR...";
+  document.getElementById("loading-screen").style.display = "flex";
+  try {
+    const doc = await db.collection("records").doc(id).get();
+    if (!doc.exists) { showToast("Kayıt bulunamadı!", true); document.getElementById("loading-screen").style.display = "none"; return; }
+    const r = { id: doc.id, ...doc.data() };
+    currentDetailId = id;
+
+    document.getElementById("detail-img").src = r.image || "";
+    document.getElementById("detail-img").style.display = r.image ? "block" : "none";
+    document.getElementById("detail-badge").textContent = "#" + r.resimNo;
+
+    const st = document.getElementById("detail-status");
+    if (r.status === "pending") { st.className = "status-banner pending"; st.textContent = "⏳ ONAY BEKLENİYOR"; }
+    else { st.className = "status-banner approved"; st.textContent = "✅ ONAYLANDI — Herkese açık"; }
+
+    document.getElementById("d-resimno").textContent = r.resimNo;
+    document.getElementById("d-guc").textContent = r.guc;
+    document.getElementById("d-gerilim").textContent = r.gerilim;
+    document.getElementById("d-notlar").textContent = r.notlar || "";
+    document.getElementById("d-notlar-wrap").style.display = r.notlar ? "block" : "none";
+    document.getElementById("d-user").textContent = r.submittedBy || "-";
+    document.getElementById("d-tarih").textContent = r.tarih;
+    document.getElementById("admin-actions").style.display = (isAdmin && r.status === "pending") ? "block" : "none";
+    document.getElementById("admin-approved-actions").style.display = (isAdmin && r.status === "approved") ? "block" : "none";
+  } catch(e) { showToast("Hata: " + e.message, true); }
+  document.getElementById("loading-screen").style.display = "none";
+  showPage("detail");
+}
+
+function goBackFromDetail() {
+  if (detailFromPage === "archive") showPage("archive");
+  else if (detailFromPage === "mine") showPage("mine");
+  else if (detailFromPage === "admin") showAdminPanel();
+  else showPage("home");
+}
+
+// ── ADMİN: ONAYLA / REDDET ──────────────────
+async function approveRecord() {
+  if (!isAdmin || !currentDetailId) return;
+  try {
+    await db.collection("records").doc(currentDetailId).update({ status: "approved" });
+    showToast("✅ Onaylandı, herkese açıldı!");
+    await showHome(); showAdminPanel();
+  } catch(e) { showToast("Hata: " + e.message, true); }
+}
+
+async function rejectRecord() {
+  if (!isAdmin || !currentDetailId) return;
+  if (!confirm("Bu kaydı silmek istediğinizden emin misiniz?")) return;
+  try {
+    await db.collection("records").doc(currentDetailId).delete();
+    showToast("Kayıt silindi.");
+    showPage("home"); await showHome();
+  } catch(e) { showToast("Hata: " + e.message, true); }
+}
+
+// ── ADMİN: DÜZENLE ───────────────────────────
+async function showEditPanel() {
+  const doc = await db.collection("records").doc(currentDetailId).get();
+  if (!doc.exists) return;
+  const r = { id: doc.id, ...doc.data() };
+  editImage = r.image || null;
+  document.getElementById("edit-resimno").value = r.resimNo;
+  document.getElementById("edit-guc").value = r.guc;
+  document.getElementById("edit-gerilim").value = r.gerilim;
+  document.getElementById("edit-notlar").value = r.notlar || "";
+  document.getElementById("edit-user").value = r.submittedBy || "";
+  document.getElementById("edit-img-prev").src = r.image || "";
+  document.getElementById("edit-img-box").style.display = "block";
+  document.getElementById("edit-error").style.display = "none";
+  showPage("edit");
+}
+
+async function saveEdit() {
+  const resimNo = document.getElementById("edit-resimno").value.trim();
+  const guc = document.getElementById("edit-guc").value.trim();
+  const gerilim = document.getElementById("edit-gerilim").value;
+  const notlar = document.getElementById("edit-notlar").value.trim();
+  const user = document.getElementById("edit-user").value.trim();
+  const errEl = document.getElementById("edit-error");
+  errEl.style.display = "none";
+  if (!resimNo || !/^620\d{4}$/.test(resimNo)) { errEl.textContent = "⚠ Geçerli resim numarası girin (620XXXX)."; errEl.style.display = "block"; return; }
+  if (!guc) { errEl.textContent = "⚠ Güç boş olamaz."; errEl.style.display = "block"; return; }
+  if (!gerilim) { errEl.textContent = "⚠ Gerilim türü seçin."; errEl.style.display = "block"; return; }
+
+  const btn = document.getElementById("edit-btn");
+  btn.disabled = true; btn.textContent = "KAYDEDİLİYOR...";
+  const updates = { resimNo, guc, gerilim, notlar, submittedBy: user };
+  if (editImage) updates.image = editImage;
+  try {
+    await db.collection("records").doc(currentDetailId).update(updates);
+    showToast("✓ Kayıt güncellendi!");
+    await showDetail(currentDetailId, detailFromPage);
+  } catch(e) { errEl.textContent = "⚠ " + e.message; errEl.style.display = "block"; }
+  btn.disabled = false; btn.textContent = "💾 KAYDET";
+}
+
+// ── ADMİN PANELİ ────────────────────────────
+async function showAdminPanel() {
+  showPage("admin");
+  document.getElementById("pending-container").innerHTML = `<div class="spinner">YÜKLENİYOR...</div>`;
+  try {
+    const snap = await db.collection("records").where("status","==","pending").orderBy("timestamp","asc").get();
+    const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (docs.length === 0) {
+      document.getElementById("pending-container").innerHTML = `<div class="empty"><div class="empty-icon">✅</div><div class="empty-title">Bekleyen kayıt yok</div><div class="empty-sub">Tüm kayıtlar onaylandı</div></div>`;
+      return;
+    }
+    document.getElementById("pending-container").innerHTML = docs.map(r => `
+      <div class="list-item" onclick="showDetail('${r.id}','admin')">
+        ${r.image ? `<img class="list-thumb" src="${r.image}" alt="">` : `<div class="list-thumb-ph">📄</div>`}
+        <div class="list-info">
+          <div class="list-resimno">#${r.resimNo} <span class="badge badge-pending">BEKLEMEDE</span></div>
+          <div class="list-guc">${r.guc} — ${r.gerilim}</div>
+          <div class="list-meta">👤 ${r.submittedBy||"-"} · ${r.tarih}</div>
+        </div>
+        <div class="list-arrow">›</div>
+      </div>`).join("");
+  } catch(e) {
+    document.getElementById("pending-container").innerHTML = `<div class="empty"><div class="empty-title">Hata: ${e.message}</div></div>`;
+  }
+}
+
+// ── KAYIT EKLE ───────────────────────────────
+function showAdd() {
+  addImage = null;
+  ["add-resimno","add-guc","add-notlar"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("add-gerilim").value = "";
+  document.getElementById("add-img-ph").style.display = "block";
+  document.getElementById("add-img-box").style.display = "none";
+  document.getElementById("add-img-prev").src = "";
+  document.getElementById("add-cam").value = "";
+  document.getElementById("add-file").value = "";
+  document.getElementById("add-error").style.display = "none";
+  document.getElementById("add-btn").textContent = "📤 ONAYA GÖNDER";
+  document.getElementById("add-btn").disabled = false;
+  showPage("add");
+}
+
+function handleImage(input, ctx) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement("canvas");
+      const MAX = 1400; let w = img.width, h = img.height;
+      if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+      const data = canvas.toDataURL("image/jpeg", 0.80);
+      if (ctx === "add") {
+        addImage = data;
+        document.getElementById("add-img-prev").src = data;
+        document.getElementById("add-img-box").style.display = "block";
+        document.getElementById("add-img-ph").style.display = "none";
+      } else {
+        editImage = data;
+        document.getElementById("edit-img-prev").src = data;
+        document.getElementById("edit-img-box").style.display = "block";
+      }
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function saveRecord() {
+  const resimNo = document.getElementById("add-resimno").value.trim();
+  const guc = document.getElementById("add-guc").value.trim();
+  const gerilim = document.getElementById("add-gerilim").value;
+  const notlar = document.getElementById("add-notlar").value.trim();
+  const errEl = document.getElementById("add-error");
+  errEl.style.display = "none";
+  if (!addImage) { errEl.textContent = "⚠ Lütfen bir ölçü resmi yükleyin."; errEl.style.display = "block"; return; }
+  if (!resimNo) { errEl.textContent = "⚠ Resim numarasını girin."; errEl.style.display = "block"; return; }
+  if (!/^620\d{4}$/.test(resimNo)) { errEl.textContent = "⚠ Resim numarası 620 ile başlayan 7 haneli sayı olmalıdır."; errEl.style.display = "block"; return; }
+  if (!guc) { errEl.textContent = "⚠ Bobinin gücünü girin."; errEl.style.display = "block"; return; }
+  if (!gerilim) { errEl.textContent = "⚠ Gerilim türünü seçin."; errEl.style.display = "block"; return; }
+
+  // Aynı resim no kontrolü
+  const existing = await db.collection("records").where("resimNo","==",resimNo).where("status","==","approved").get();
+  if (!existing.empty) { errEl.textContent = "⚠ Bu resim numarası zaten onaylı arşivde var!"; errEl.style.display = "block"; return; }
+
+  const btn = document.getElementById("add-btn");
+  btn.disabled = true; btn.textContent = "GÖNDERİLİYOR...";
+  const rec = {
+    resimNo, guc, gerilim, notlar,
+    image: addImage,
+    submittedBy: currentUser,
+    status: isAdmin ? "approved" : "pending",
+    tarih: new Date().toLocaleDateString("tr-TR"),
+    timestamp: new Date().toISOString()
+  };
+  try {
+    await db.collection("records").add(rec);
+    showToast(isAdmin ? "✅ Kayıt doğrudan onaylandı!" : "📤 Onaya gönderildi! Admin onaylayınca herkese açılır.");
+    await showHome();
+  } catch(e) { errEl.textContent = "⚠ " + e.message; errEl.style.display = "block"; btn.disabled = false; btn.textContent = "📤 ONAYA GÖNDER"; }
+}
+
+// ── YEDEK ────────────────────────────────────
+async function exportBackup() {
+  showToast("Yedek hazırlanıyor...");
+  try {
+    const snap = await db.collection("records").where("status","==","approved").get();
+    const records = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (!records.length) { showToast("Yedeklenecek kayıt yok!", true); return; }
+    const blob = new Blob([JSON.stringify({ app:"BobinArsiv", version:5, exportDate:new Date().toISOString(), count:records.length, records })], { type:"application/octet-stream" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "bobin-yedek-" + new Date().toLocaleDateString("tr-TR").replace(/\./g,"-") + ".bobin";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    showToast("✓ " + records.length + " kayıt yedeklendi!");
+  } catch(e) { showToast("Hata: " + e.message, true); }
+}
+
+async function importBackup(input) {
+  if (!isAdmin) { showToast("Sadece admin yedek yükleyebilir!", true); return; }
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    try {
+      const bk = JSON.parse(e.target.result);
+      if (!bk.records) { showToast("Geçersiz dosya!", true); return; }
+      let added = 0;
+      for (const r of bk.records) {
+        const ex = await db.collection("records").where("resimNo","==",r.resimNo).get();
+        if (ex.empty) {
+          const nr = { ...r, status:"approved", importedAt:new Date().toISOString() };
+          delete nr.id;
+          await db.collection("records").add(nr); added++;
+        }
+      }
+      showToast("✓ " + added + " kayıt yüklendi!"); input.value = "";
+    } catch(err) { showToast("Dosya okunamadı!", true); }
+  };
+  reader.readAsText(file);
+}
+
+function showSettings() { showPage("settings"); }
+
+// ── LIGHTBOX ─────────────────────────────────
+// ── LIGHTBOX ZOOM ────────────────────────────
+function openLightbox(src) {
+  const lb = document.getElementById("lightbox");
+  const img = document.getElementById("lightbox-img");
+  img.src = src;
+  img.style.transform = "scale(1) translate(0px, 0px)";
+  lbScale = 1; lbTx = 0; lbTy = 0;
+  lb.classList.add("open");
+  // Hint 2 sn sonra kaybol
+  const hint = document.getElementById("lightbox-hint");
+  hint.style.opacity = "1";
+  setTimeout(() => hint.style.opacity = "0", 2500);
+}
+
+function closeLightbox() {
+  const lb = document.getElementById("lightbox");
+  const img = document.getElementById("lightbox-img");
+  lb.classList.remove("open");
+  img.style.transform = "scale(1) translate(0px, 0px)";
+  lbScale = 1; lbTx = 0; lbTy = 0;
+}
+
+// Zoom state
+let lbScale = 1, lbTx = 0, lbTy = 0;
+let lbLastDist = 0, lbDragging = false;
+let lbLastX = 0, lbLastY = 0;
+let lbLastTap = 0;
+
+function lbApply() {
+  const img = document.getElementById("lightbox-img");
+  img.style.transform = `scale(${lbScale}) translate(${lbTx/lbScale}px, ${lbTy/lbScale}px)`;
+}
+
+function lbClamp() {
+  lbScale = Math.min(Math.max(lbScale, 1), 5);
+  if (lbScale === 1) { lbTx = 0; lbTy = 0; }
+}
+
+(function() {
+  const lb = document.getElementById("lightbox");
+
+  // Çift tıklama zoom
+  lb.addEventListener("dblclick", function(e) {
+    if (e.target.id === "lightbox-img") {
+      if (lbScale > 1) { lbScale = 1; lbTx = 0; lbTy = 0; }
+      else { lbScale = 2.5; }
+      lbApply();
+    }
+  });
+
+  // Çift dokunma (mobile)
+  lb.addEventListener("touchend", function(e) {
+    if (e.target.id !== "lightbox-img") return;
+    const now = Date.now();
+    if (now - lbLastTap < 300) {
+      e.preventDefault();
+      if (lbScale > 1) { lbScale = 1; lbTx = 0; lbTy = 0; }
+      else { lbScale = 2.5; }
+      lbApply();
+    }
+    lbLastTap = now;
+  });
+
+  // Pinch zoom
+  lb.addEventListener("touchstart", function(e) {
+    if (e.target.id !== "lightbox-img") return;
+    if (e.touches.length === 2) {
+      lbLastDist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+    } else if (e.touches.length === 1 && lbScale > 1) {
+      lbDragging = true;
+      lbLastX = e.touches[0].clientX;
+      lbLastY = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  lb.addEventListener("touchmove", function(e) {
+    if (e.target.id !== "lightbox-img") return;
+    e.preventDefault();
+    if (e.touches.length === 2) {
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      if (lbLastDist > 0) {
+        lbScale *= dist / lbLastDist;
+        lbClamp();
+        lbApply();
+      }
+      lbLastDist = dist;
+    } else if (e.touches.length === 1 && lbDragging) {
+      lbTx += e.touches[0].clientX - lbLastX;
+      lbTy += e.touches[0].clientY - lbLastY;
+      lbLastX = e.touches[0].clientX;
+      lbLastY = e.touches[0].clientY;
+      lbApply();
+    }
+  }, { passive: false });
+
+  lb.addEventListener("touchend", function(e) {
+    lbLastDist = 0;
+    lbDragging = false;
+    if (lbScale < 1) { lbScale = 1; lbTx = 0; lbTy = 0; lbApply(); }
+  }, { passive: true });
+
+  // Mouse wheel zoom (masaüstü)
+  lb.addEventListener("wheel", function(e) {
+    if (e.target.id !== "lightbox-img") return;
+    e.preventDefault();
+    lbScale *= e.deltaY < 0 ? 1.15 : 0.87;
+    lbClamp(); lbApply();
+  }, { passive: false });
+})();
+
+// ── BAŞLAT ───────────────────────────────────
+async function init() {
+  const ready = initFirebase();
+  if (!ready) {
+    document.getElementById("loading-screen").style.display = "none";
+    document.getElementById("setup-banner-wrap").innerHTML = `<div class="setup-banner"><strong>⚠ Firebase Kurulumu Gerekli</strong>KURULUM-REHBERI.txt dosyasını okuyun.</div>`;
+    showPage("login"); return;
+  }
+  const savedUser = localStorage.getItem("bobin_user");
+  const savedAdmin = localStorage.getItem("bobin_admin");
+  if (savedUser) {
+    currentUser = savedUser;
+    isAdmin = savedAdmin === "1";
+    document.getElementById("login-name").value = savedUser;
+    await showHome();
+  } else {
+    document.getElementById("loading-screen").style.display = "none";
+    showPage("login");
+  }
+}
+
+init();
+
+
+// ── GERİ TUŞU YÖNETİMİ ───────────────────────
+// Alt sayfalarda geri tuşu çalışmaz, sadece ana sayfada çift basma ile çıkış
+let exitWarning = false;
+let exitTimer = null;
+
+function getActivePage() {
+  const p = document.querySelector(".page.active");
+  return p ? p.id.replace("page-","") : "home";
+}
+
+function handleBack() {
+  const page = getActivePage();
+
+  // Lightbox açıksa kapat, başka bir şey yapma
+  const lb = document.getElementById("lightbox");
+  if (lb && lb.classList.contains("open")) {
+    closeLightbox();
+    return;
+  }
+
+  // Sadece ana sayfada çıkış uyarısı — diğer sayfalarda hiçbir şey yapma
+  if (page !== "home") return;
+
+  if (exitWarning) {
+    clearTimeout(exitTimer);
+    exitWarning = false;
+    document.getElementById("exit-toast").style.display = "none";
+    navigator.app ? navigator.app.exitApp() : window.close();
+    return;
+  }
+  exitWarning = true;
+  const el = document.getElementById("exit-toast");
+  el.style.display = "block";
+  exitTimer = setTimeout(function() {
+    exitWarning = false;
+    el.style.display = "none";
+  }, 5000);
+}
+
+// Gonative API
+window.gonativeBackPressed = function() {
+  handleBack();
+  return true;
+};
+
+// Yedek: popstate
+(function() {
+  function pushDummy() {
+    try { history.pushState({ bobin: true }, ""); } catch(e) {}
+  }
+  pushDummy();
+  window.addEventListener("popstate", function() {
+    pushDummy();
+    handleBack();
+  });
+})();
+</script>
+</body>
+</html>
