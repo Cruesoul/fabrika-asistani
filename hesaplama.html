@@ -275,16 +275,33 @@ function hesaplaHalka(spirSayi, paralel, telR, kanalR, kanalSpirler, eksiltme, b
 
   const toplamDuz = kumDuz;
 
-  const spirlerDevrik = spirler.map((sp, i) => {
-    const duzEsIndex = spirSayi - 1 - i;
-    const duzEs = spirler[duzEsIndex];
-    const kumDevrikBaslangic = toplamDuz - duzEs.kumDuz;
-    const kumDevrikBitis     = toplamDuz - duzEs.kumDuzBaslangic;
+  // Devrik sargı: spir boyları ters sırada, kümülatif sıfırdan başlıyor
+  let kumDevrik = 0;
+  const spirlerDevrik = [...spirler].reverse().map((duzEs, i) => {
+    const kumDevrikBaslangic = kumDevrik;
+    kumDevrik += duzEs.spirBoy;
+    const kumDevrikBitis = kumDevrik;
+
+    // Devrik spir i bittikten sonra kanal bandı başlıyor mu?
+    // Düz sargıda aynı indeksteki (spirSayi - 1 - i) spirin kanal durumuna bak
+    // Örnek: devrik spir 1 = düz spir 7 (i=0, index=6) → kanalVar=false (7. spir üstünde kanal yok)
+    // Ama biz düz spir 6'nın kanal durumuna bakmalıyız → index = spirSayi - 1 - i - 1 + 1 = spirSayi - 1 - i
+    // Düz sargıda 1,2,3,4,5 kanal var → devrik 1,2,3,4,5 kanal olmalı
+    // Devrik i=0 (spir1) → düz spir 7'nin kanalı = false, ama düz spir 6 (index 5) = false da...
+    // Doğru mantık: devrik spir i'nin kanal durumu = düz sargıdaki EŞ spirin kanal durumu (duzEs.kanalVar)
+    // Devrik spir i (0-indexed) bitiminde kanal bandı başlıyor mu?
+    // Düz sargıda kanal "N. spir üstünde" = N ve N+1 arası boşluk
+    // Devrik sargıda bu fiziksel boşluk = devrik spir (spirSayi-1-N) bitiminde
+    // Ters: devrik spir i bitiminde kanal var mı? → düz spir index (spirSayi-3-i) kanalVar mı?
+    // (0-indexed: i=0→düz index 4 (spir5)=true, i=4→düz index 0 (spir1)=true, i=5→-1=false)
+    const duzKanalIndex = spirSayi - 3 - i;
+    const kanalVar = duzKanalIndex >= 0 ? spirler[duzKanalIndex].kanalVar : false;
+
     return {
       s: i + 1,
       ortaCap: duzEs.ortaCap,
       spirBoy: duzEs.spirBoy,
-      kanalVar: duzEs.kanalVar,
+      kanalVar,
       sonSpir: duzEs.sonSpir,
       kumDevrikBaslangic,
       kumDevrikBitis,
@@ -379,15 +396,31 @@ function hesapla() {
       const spirler = isDuz ? sonuc.spirler : sonuc.spirlerDevrik;
       if (hi > 0) rows += `<tr><td colspan="7" style="padding:2px;background:var(--surface2);"></td></tr>`;
 
-      spirler.forEach(sp => {
-        const bas  = isDuz ? sp.kumDuzBaslangic : sp.kumDevrikBaslangic;
-        const bit  = isDuz ? sp.kumDuz          : sp.kumDevrikBitis;
-        const kanalBasCell = sp.kanalVar
-          ? `<span style="color:#f0a030;font-weight:600">${fmt(bas, 1)}</span>`
-          : '<span style="color:#3a4060">—</span>';
-        const kanalBitCell = sp.kanalVar
-          ? `<span style="color:#f0a030;font-weight:600">${fmt(bit, 1)}</span>`
-          : '<span style="color:#3a4060">—</span>';
+      spirler.forEach((sp, si) => {
+        let kanalBasCell, kanalBitCell;
+        if (isDuz) {
+          // Düz: kanal başlangıcı = bu spirin bitiş metrajı
+          // Bitiş = bir sonraki spirin bitiş metrajı
+          const sonraki = spirler[si + 1];
+          const bitMetraj = sonraki ? sp.kumDuz + sonraki.spirBoy : null;
+          kanalBasCell = sp.kanalVar
+            ? `<span style="color:#f0a030;font-weight:600">${fmt(sp.kumDuz, 1)}</span>`
+            : '<span style="color:#3a4060">—</span>';
+          kanalBitCell = sp.kanalVar && bitMetraj
+            ? `<span style="color:#f0a030;font-weight:600">${fmt(bitMetraj, 1)}</span>`
+            : '<span style="color:#3a4060">—</span>';
+        } else {
+          // Devrik: kanal başlangıcı = bu spirin bitiş metrajı (kumDevrikBitis)
+          // Bitiş = bir sonraki devrik spirin bitiş metrajı
+          const sonraki = spirler[si + 1];
+          const bitMetraj = sonraki ? sp.kumDevrikBitis + sonraki.spirBoy : null;
+          kanalBasCell = sp.kanalVar
+            ? `<span style="color:#f0a030;font-weight:600">${fmt(sp.kumDevrikBitis, 1)}</span>`
+            : '<span style="color:#3a4060">—</span>';
+          kanalBitCell = sp.kanalVar && bitMetraj
+            ? `<span style="color:#f0a030;font-weight:600">${fmt(bitMetraj, 1)}</span>`
+            : '<span style="color:#3a4060">—</span>';
+        }
         const badge = sp.kanalVar ? `<span class="badge badge-kanal">KANAL</span> ` : '';
         const sonBadge = sp.sonSpir ? `<span class="badge badge-son">EKSİLTME</span>` : '';
         const kumBitis = isDuz ? sp.kumDuz : sp.kumDevrikBitis;
