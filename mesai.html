@@ -7,285 +7,82 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f0f0f;
-    --surface: #1a1a1a;
-    --surface2: #242424;
-    --border: #2e2e2e;
-    --accent: #f5a623;
-    --accent2: #e8441a;
-    --text: #f0ede8;
-    --muted: #6b6b6b;
-    --green: #4caf7d;
-    --purple: #9b6bff;
-    --red: #e8441a;
+    --bg: #0f0f0f; --surface: #1a1a1a; --surface2: #242424; --border: #2e2e2e;
+    --accent: #f5a623; --accent2: #e8441a; --text: #f0ede8; --muted: #6b6b6b;
+    --green: #4caf7d; --purple: #9b6bff; --red: #e8441a;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'IBM Plex Sans', sans-serif;
-    min-height: 100vh;
-  }
-
-  /* HEADER */
-  header {
-    background: var(--surface);
-    border-bottom: 2px solid var(--accent);
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 26px;
-    letter-spacing: 3px;
-    color: var(--accent);
-  }
-  .logo span {
-    color: var(--muted);
-    font-size: 10px;
-    font-family: 'IBM Plex Mono', monospace;
-    display: block;
-    letter-spacing: 1px;
-    margin-top: -2px;
-  }
+  body { background: var(--bg); color: var(--text); font-family: 'IBM Plex Sans', sans-serif; min-height: 100vh; }
+  header { background: var(--surface); border-bottom: 2px solid var(--accent); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .logo { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 3px; color: var(--accent); }
+  .logo span { color: var(--muted); font-size: 10px; font-family: 'IBM Plex Mono', monospace; display: block; letter-spacing: 1px; margin-top: -2px; }
   .hdr-total { text-align: right; }
   .hdr-total .val { font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--accent); letter-spacing:1px; }
   .hdr-total .lbl { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; }
-
-  /* NAV TABS */
-  .nav-tabs {
-    display: flex;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 57px;
-    z-index: 99;
-  }
-  .nav-tab {
-    flex: 1;
-    background: none;
-    border: none;
-    border-bottom: 3px solid transparent;
-    color: var(--muted);
-    cursor: pointer;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    padding: 11px 4px;
-    text-align: center;
-    text-transform: uppercase;
-    transition: all 0.15s;
-  }
-  .nav-tab.active {
-    border-bottom-color: var(--accent);
-    color: var(--accent);
-  }
-
-  /* SAYFALAR */
+  .nav-tabs { display: flex; background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 57px; z-index: 99; }
+  .nav-tab { flex: 1; background: none; border: none; border-bottom: 3px solid transparent; color: var(--muted); cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 1px; padding: 11px 4px; text-align: center; text-transform: uppercase; transition: all 0.15s; }
+  .nav-tab.active { border-bottom-color: var(--accent); color: var(--accent); }
   .page { display: none; max-width: 600px; margin: 0 auto; padding: 18px 14px 100px; }
   .page.active { display: block; }
-
-  /* KART */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 18px;
-    margin-bottom: 16px;
-  }
-  .card-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 17px;
-    letter-spacing: 2px;
-    color: var(--accent);
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .card-title::before {
-    content:'';
-    display:block;
-    width:3px; height:17px;
-    background:var(--accent);
-    border-radius:2px;
-  }
-
-  /* FORM */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 16px; }
+  .card-title { font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 2px; color: var(--accent); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .card-title::before { content:''; display:block; width:3px; height:17px; background:var(--accent); border-radius:2px; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
   .form-group { display: flex; flex-direction: column; gap: 5px; }
-  label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px; font-weight: 600;
-    letter-spacing: 1px; color: var(--muted);
-    text-transform: uppercase;
-  }
-  input, select, textarea {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text);
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 15px;
-    padding: 10px 12px;
-    width: 100%;
-    outline: none;
-    transition: border-color 0.2s;
-  }
+  label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; }
+  input, select, textarea { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; padding: 10px 12px; width: 100%; outline: none; transition: border-color 0.2s; }
   input:focus, select:focus, textarea:focus { border-color: var(--accent); }
   select option { background: var(--surface2); }
   textarea { resize: vertical; min-height: 56px; font-size: 13px; }
-
-  /* TİP BUTONLARI */
   .type-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-  .type-btn {
-    background: var(--surface2);
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    color: var(--muted);
-    cursor: pointer;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px; font-weight: 600;
-    padding: 10px 6px;
-    text-align: center;
-    line-height: 1.4;
-    transition: all 0.15s;
-  }
+  .type-btn { background: var(--surface2); border: 2px solid var(--border); border-radius: 8px; color: var(--muted); cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; padding: 10px 6px; text-align: center; line-height: 1.4; transition: all 0.15s; }
   .type-btn:hover { border-color: var(--accent); }
   .type-btn[data-type="resmi"].active { background:rgba(245,166,35,0.12); border-color:var(--accent); color:var(--accent); }
   .type-btn[data-type="hafta"].active { background:rgba(76,175,125,0.12); border-color:var(--green); color:var(--green); }
   .type-btn[data-type="dini"].active  { background:rgba(155,107,255,0.12); border-color:var(--purple); color:var(--purple); }
-
-  /* KAYDET BUTONU */
-  .btn-save {
-    width: 100%;
-    background: var(--accent);
-    border: none; border-radius: 6px;
-    color: #000; cursor: pointer;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px; letter-spacing: 3px;
-    padding: 13px; margin-top: 6px;
-    transition: all 0.15s;
-  }
+  .btn-save { width: 100%; background: var(--accent); border: none; border-radius: 6px; color: #000; cursor: pointer; font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 3px; padding: 13px; margin-top: 6px; transition: all 0.15s; }
   .btn-save:hover { background: #e09200; }
   .btn-save:active { transform: scale(0.99); }
-
-  /* ÖZET KARTLARI (3'lü) */
   .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 16px; }
   .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:12px 8px; text-align:center; }
   .stat-card .val { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:1px; line-height:1; }
   .stat-card .lbl { font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:600; color:var(--muted); text-transform:uppercase; margin-top:5px; }
   .stat-card.resmi .val { color:var(--accent); }
-  .stat-card.hafta .val  { color:var(--green); }
-  .stat-card.dini .val   { color:var(--purple); }
-
-  /* TOPLAM BANT */
-  .total-bar {
-    background:var(--surface); border:1px solid var(--accent);
-    border-radius:8px; padding:14px 18px; margin-bottom:16px;
-    display:flex; align-items:center; justify-content:space-between;
-  }
+  .stat-card.hafta .val { color:var(--green); }
+  .stat-card.dini .val  { color:var(--purple); }
+  .total-bar { background:var(--surface); border:1px solid var(--accent); border-radius:8px; padding:14px 18px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; }
   .total-bar .tl { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted); }
   .total-bar .ts { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--muted); margin-top:2px; }
   .total-bar .tv { font-family:'Bebas Neue',sans-serif; font-size:34px; color:var(--accent); letter-spacing:1px; }
   .total-bar .tu { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--muted); }
-
-  /* ─── AYLIK / YILLIK ÖZET SAYFALARI ─── */
-  .period-select-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-    align-items: center;
-  }
-  .period-select-row select {
-    flex: 1;
-    font-size: 14px;
-    padding: 9px 12px;
-  }
-
-  /* Aylık grafik barlar */
+  .period-select-row { display: flex; gap: 8px; margin-bottom: 16px; align-items: center; }
+  .period-select-row select { flex: 1; font-size: 14px; padding: 9px 12px; }
   .month-bars { display: flex; flex-direction: column; gap: 10px; }
   .month-row { display: flex; align-items: center; gap: 10px; }
-  .month-name {
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11px; font-weight:600; color:var(--muted);
-    width: 32px; flex-shrink:0; text-align:right;
-  }
+  .month-name { font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; color:var(--muted); width:32px; flex-shrink:0; text-align:right; }
   .month-bar-wrap { flex: 1; background: var(--surface2); border-radius:4px; height:22px; overflow:hidden; }
-  .month-bar-fill {
-    height: 100%; border-radius:4px;
-    background: var(--accent);
-    transition: width 0.4s ease;
-    min-width: 2px;
-  }
-  .month-val {
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11px; font-weight:600;
-    color:var(--text); width:52px; text-align:right; flex-shrink:0;
-  }
-
-  /* Yıllık çubuklu tablo */
+  .month-bar-fill { height: 100%; border-radius:4px; background: var(--accent); transition: width 0.4s ease; min-width: 2px; }
+  .month-val { font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; color:var(--text); width:52px; text-align:right; flex-shrink:0; }
   .year-table { width:100%; border-collapse:collapse; }
-  .year-table th {
-    font-family:'IBM Plex Mono',monospace;
-    font-size:10px; font-weight:600; color:var(--muted);
-    text-transform:uppercase; letter-spacing:0.5px;
-    padding:6px 10px; text-align:left;
-    border-bottom:1px solid var(--border);
-  }
-  .year-table td {
-    font-family:'IBM Plex Mono',monospace;
-    font-size:12px; padding:9px 10px;
-    border-bottom:1px solid var(--border);
-  }
+  .year-table th { font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; padding:6px 10px; text-align:left; border-bottom:1px solid var(--border); }
+  .year-table td { font-family:'IBM Plex Mono',monospace; font-size:12px; padding:9px 10px; border-bottom:1px solid var(--border); }
   .year-table tr:last-child td { border-bottom: none; }
   .year-table .year-num { font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:1px; color:var(--accent); }
   .year-table .resmi-clr { color: var(--accent); }
-  .year-table .hafta-clr  { color: var(--green); }
-  .year-table .dini-clr   { color: var(--purple); }
-  .year-table .total-clr  { color: var(--text); font-weight:600; }
-
-  /* KAYIT BÖLÜMÜ */
+  .year-table .hafta-clr { color: var(--green); }
+  .year-table .dini-clr  { color: var(--purple); }
+  .year-table .total-clr { color: var(--text); font-weight:600; }
   .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
   .section-title { font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:2px; color:var(--muted); }
-  .year-sel {
-    background:var(--surface2); border:1px solid var(--border);
-    border-radius:6px; color:var(--text);
-    font-family:'IBM Plex Mono',monospace; font-size:12px;
-    padding:6px 10px; outline:none; cursor:pointer;
-  }
-
-  /* FİLTRE */
+  .year-sel { background:var(--surface2); border:1px solid var(--border); border-radius:6px; color:var(--text); font-family:'IBM Plex Mono',monospace; font-size:12px; padding:6px 10px; outline:none; cursor:pointer; }
   .filter-bar { display:flex; gap:8px; margin-bottom:12px; overflow-x:auto; padding-bottom:4px; }
-  .filter-btn {
-    background:var(--surface); border:1px solid var(--border);
-    border-radius:20px; color:var(--muted); cursor:pointer;
-    font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600;
-    letter-spacing:0.5px; padding:6px 14px; white-space:nowrap;
-    transition:all 0.15s;
-  }
+  .filter-btn { background:var(--surface); border:1px solid var(--border); border-radius:20px; color:var(--muted); cursor:pointer; font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600; letter-spacing:0.5px; padding:6px 14px; white-space:nowrap; transition:all 0.15s; }
   .filter-btn.active { background:var(--accent); border-color:var(--accent); color:#000; }
-
-  /* KAYIT SATIRI */
-  .record {
-    background:var(--surface); border:1px solid var(--border);
-    border-radius:8px; padding:13px 14px; margin-bottom:10px;
-    display:flex; align-items:flex-start; gap:12px;
-    animation: slideIn 0.2s ease;
-    transition: border-color 0.15s;
-  }
+  .record { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:13px 14px; margin-bottom:10px; display:flex; align-items:flex-start; gap:12px; animation: slideIn 0.2s ease; transition: border-color 0.15s; }
   .record:hover { border-color: var(--accent); }
   @keyframes slideIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
   .rec-dot { width:9px; height:9px; border-radius:50%; margin-top:5px; flex-shrink:0; }
-  .dot-resmi { background:var(--accent); }
-  .dot-hafta  { background:var(--green); }
-  .dot-dini   { background:var(--purple); }
+  .dot-resmi { background:var(--accent); } .dot-hafta { background:var(--green); } .dot-dini { background:var(--purple); }
   .rec-body { flex:1; }
   .rec-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:3px; }
   .rec-date { font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; }
@@ -294,67 +91,36 @@
   .badge-hafta  { background:rgba(76,175,125,0.15); color:var(--green); }
   .badge-dini   { background:rgba(155,107,255,0.15); color:var(--purple); }
   .rec-hours { font-family:'Bebas Neue',sans-serif; font-size:26px; letter-spacing:1px; line-height:1; }
-  .clr-resmi { color:var(--accent); }
-  .clr-hafta  { color:var(--green); }
-  .clr-dini   { color:var(--purple); }
+  .clr-resmi { color:var(--accent); } .clr-hafta { color:var(--green); } .clr-dini { color:var(--purple); }
   .rec-hours-unit { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted); }
   .rec-note { font-size:12px; color:var(--muted); margin-top:3px; font-style:italic; }
   .rec-delete { background:none; border:none; color:var(--muted); cursor:pointer; font-size:16px; padding:2px 4px; transition:color 0.15s; flex-shrink:0; }
   .rec-delete:hover { color:var(--red); }
-
-  /* BOŞ */
   .empty { text-align:center; padding:48px 20px; color:var(--muted); }
   .empty-icon { font-size:44px; margin-bottom:12px; }
   .empty p { font-family:'IBM Plex Mono',monospace; font-size:12px; line-height:1.7; }
-
-  /* TOAST */
-  .toast {
-    position:fixed; bottom:24px; left:50%;
-    transform:translateX(-50%) translateY(80px);
-    background:var(--green); color:#000;
-    font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600;
-    padding:12px 24px; border-radius:6px; z-index:999;
-    transition:transform 0.3s ease; white-space:nowrap;
-  }
+  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--green); color:#000; font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; padding:12px 24px; border-radius:6px; z-index:999; transition:transform 0.3s ease; white-space:nowrap; }
   .toast.show { transform:translateX(-50%) translateY(0); }
-
-  /* YEDEKLEme BUTONLARI */
+  .toast.error { background: var(--red); color: #fff; }
   .btn-row { display:flex; gap:10px; }
-  .btn-outline {
-    flex:1;
-    background:none; border:1px solid var(--border);
-    border-radius:6px; color:var(--text);
-    cursor:pointer; font-family:'IBM Plex Mono',monospace;
-    font-size:11px; font-weight:600; letter-spacing:0.5px;
-    padding:11px 8px; text-align:center;
-    transition:all 0.15s;
-  }
+  .btn-outline { flex:1; background:none; border:1px solid var(--border); border-radius:6px; color:var(--text); cursor:pointer; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; letter-spacing:0.5px; padding:11px 8px; text-align:center; transition:all 0.15s; }
   .btn-outline:hover { border-color:var(--accent); color:var(--accent); }
   .btn-danger { border-color: var(--red); color: var(--red); }
   .btn-danger:hover { background: rgba(232,68,26,0.1); }
-  .info-box {
-    background:var(--surface2); border:1px solid var(--border);
-    border-radius:8px; padding:14px 16px; margin-top:12px;
-    font-family:'IBM Plex Mono',monospace; font-size:11px;
-    color:var(--muted); line-height:1.7;
-  }
+  .info-box { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin-top:12px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted); line-height:1.7; }
   .info-box strong { color:var(--text); }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">
-    MESAİ TAKİP
-    <span>FABRİKA ÇALIŞAN ASISTANI</span>
-  </div>
+  <div class="logo">MESAİ TAKİP<span>FABRİKA ÇALIŞAN ASISTANI</span></div>
   <div class="hdr-total">
     <div class="val" id="hdrTotal">0 saat</div>
     <div class="lbl" id="hdrAyLbl">BU AY</div>
   </div>
 </header>
 
-<!-- SEKMELER -->
 <div class="nav-tabs">
   <button class="nav-tab active" onclick="showPage('ekle',this)">➕ Ekle</button>
   <button class="nav-tab" onclick="showPage('kayitlar',this)">📋 Kayıtlar</button>
@@ -363,7 +129,7 @@
   <button class="nav-tab" onclick="showPage('ayarlar',this)">⚙️ Ayarlar</button>
 </div>
 
-<!-- SAYFA: EKLE -->
+<!-- EKLE -->
 <div class="page active" id="page-ekle">
   <div class="card">
     <div class="card-title">Yeni Mesai Ekle</div>
@@ -380,9 +146,9 @@
     <div class="form-group" style="margin-bottom:10px">
       <label>Tatil Türü</label>
       <div class="type-grid">
-        <button class="type-btn active" data-type="resmi" onclick="selectType(this)">🏛<br>Resmi<br>Tatil<br><small style="font-size:9px;opacity:0.7">×3</small></button>
-        <button class="type-btn" data-type="hafta"  onclick="selectType(this)">💼<br>Hafta<br>İçi<br><small style="font-size:9px;opacity:0.7">×2</small></button>
-        <button class="type-btn" data-type="dini"   onclick="selectType(this)">🌙<br>Bayram<br>Mesaisi<br><small style="font-size:9px;opacity:0.7">×3.5</small></button>
+        <button class="type-btn" data-type="resmi" onclick="selectType(this)">🏛<br>Resmi<br>Tatil<br><small style="font-size:9px;opacity:0.7">×3</small></button>
+        <button class="type-btn" data-type="hafta" onclick="selectType(this)">💼<br>Hafta<br>İçi<br><small style="font-size:9px;opacity:0.7">×2</small></button>
+        <button class="type-btn" data-type="dini"  onclick="selectType(this)">🌙<br>Bayram<br>Mesaisi<br><small style="font-size:9px;opacity:0.7">×3.5</small></button>
       </div>
     </div>
     <div class="form-group" style="margin-bottom:10px">
@@ -391,13 +157,11 @@
     </div>
     <button class="btn-save" onclick="saveRecord()">KAYDET</button>
   </div>
-
-  <!-- HIZLI ÖZET -->
   <div class="total-bar">
     <div>
       <div class="tl" id="totalBarBaslik">Bu Ay Mesai</div>
       <div class="ts" id="totalSub"></div>
-      <div class="ts" style="margin-top:4px; color:var(--accent)">Katsayılı: <span id="totalKat" style="font-weight:700">0 saat</span></div>
+      <div class="ts" style="margin-top:4px;color:var(--accent)">Katsayılı: <span id="totalKat" style="font-weight:700">0 saat</span></div>
     </div>
     <div style="text-align:right">
       <div class="tv" id="totalVal">0</div>
@@ -405,26 +169,17 @@
     </div>
   </div>
   <div class="summary-grid">
-    <div class="stat-card resmi">
-      <div class="val" id="sumResmi">0</div>
-      <div class="lbl">Resmi<br>Tatil ×3</div>
-    </div>
-    <div class="stat-card hafta">
-      <div class="val" id="sumHafta">0</div>
-      <div class="lbl">Hafta<br>İçi ×2</div>
-    </div>
-    <div class="stat-card dini">
-      <div class="val" id="sumDini">0</div>
-      <div class="lbl">Bayram<br>Mes. ×3.5</div>
-    </div>
+    <div class="stat-card resmi"><div class="val" id="sumResmi">0</div><div class="lbl">Resmi<br>Tatil ×3</div></div>
+    <div class="stat-card hafta"><div class="val" id="sumHafta">0</div><div class="lbl">Hafta<br>İçi ×2</div></div>
+    <div class="stat-card dini"><div class="val" id="sumDini">0</div><div class="lbl">Bayram<br>Mes. ×3.5</div></div>
   </div>
 </div>
 
-<!-- SAYFA: KAYITLAR -->
+<!-- KAYITLAR -->
 <div class="page" id="page-kayitlar">
   <div class="section-header">
     <div class="section-title">KAYITLAR</div>
-    <select class="year-sel" id="yearSelect" onchange="renderAll()">
+    <select class="year-sel" id="yearSelect" onchange="renderRecords()">
       <option value="all">Tüm Yıllar</option>
     </select>
   </div>
@@ -437,14 +192,12 @@
   <div id="recordsList"></div>
 </div>
 
-<!-- SAYFA: AYLIK ÖZET -->
+<!-- AYLIK -->
 <div class="page" id="page-aylik">
   <div class="card">
     <div class="card-title">Aylık Özet</div>
     <div class="period-select-row">
-      <select id="aylikYil" onchange="renderAylik()">
-        <option value="all">Tüm Yıllar</option>
-      </select>
+      <select id="aylikYil" onchange="renderAylik()"><option value="all">Tüm Yıllar</option></select>
     </div>
     <div class="month-bars" id="aylikBars"></div>
   </div>
@@ -454,51 +207,37 @@
   </div>
 </div>
 
-<!-- SAYFA: YILLIK ÖZET -->
+<!-- YILLIK -->
 <div class="page" id="page-yillik">
   <div class="card">
     <div class="card-title">Yıllık Özet</div>
-    <table class="year-table" id="yillikTable">
-      <thead>
-        <tr>
-          <th>Yıl</th>
-          <th>🏛 Resmi</th>
-          <th>💼 H.İçi</th>
-          <th>🌙 Bayram</th>
-          <th>Ham</th>
-          <th style="color:var(--accent)">Katsayılı</th>
-        </tr>
-      </thead>
+    <table class="year-table">
+      <thead><tr><th>Yıl</th><th>🏛 Resmi</th><th>💼 H.İçi</th><th>🌙 Bayram</th><th>Ham</th><th style="color:var(--accent)">Katsayılı</th></tr></thead>
       <tbody id="yillikBody"></tbody>
     </table>
-    <div id="yillikEmpty" style="display:none" class="empty" style="padding:30px">
-      <div class="empty-icon">📊</div>
-      <p>Henüz kayıt yok.</p>
+    <div id="yillikEmpty" style="display:none" class="empty">
+      <div class="empty-icon">📊</div><p>Henüz kayıt yok.</p>
     </div>
   </div>
 </div>
 
-<!-- SAYFA: AYARLAR -->
+<!-- AYARLAR -->
 <div class="page" id="page-ayarlar">
   <div class="card">
     <div class="card-title">Yedek & Geri Yükle</div>
-    <p style="font-size:13px; color:var(--muted); margin-bottom:14px; font-family:'IBM Plex Mono',monospace; line-height:1.6;">
-      Verilerinizi JSON dosyası olarak yedekleyin veya önceki yedeği geri yükleyin.
-    </p>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;font-family:'IBM Plex Mono',monospace;line-height:1.6;">Verilerinizi JSON dosyası olarak yedekleyin veya önceki yedeği geri yükleyin.</p>
     <div class="btn-row">
       <button class="btn-outline" onclick="exportData()">⬇ Yedek Al</button>
       <button class="btn-outline" onclick="document.getElementById('importFile').click()">⬆ Geri Yükle</button>
     </div>
     <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
   </div>
-
   <div class="card">
     <div class="card-title">Tehlikeli Bölge</div>
     <div class="btn-row">
       <button class="btn-outline btn-danger" onclick="clearAll()">🗑 Tüm Kayıtları Sil</button>
     </div>
   </div>
-
   <div class="info-box">
     <strong>📱 Bu uygulamayı telefona eklemek için:</strong><br><br>
     <strong>Android (Chrome):</strong><br>
@@ -506,7 +245,7 @@
     2. Sağ üstteki 3 nokta menüsüne dokunun<br>
     3. "Ana ekrana ekle" seçeneğine dokunun<br>
     4. Artık uygulama gibi çalışır!<br><br>
-    <strong>Not:</strong> Veriler telephone hafızasına kaydedilir, uygulama kapatılsa bile silinmez. Güvenli yedek için "Yedek Al" butonunu kullanın.
+    <strong>Not:</strong> Veriler telefon hafızasına kaydedilir, uygulama kapatılsa bile silinmez. Güvenli yedek için "Yedek Al" butonunu kullanın.
   </div>
 </div>
 
@@ -516,12 +255,35 @@
 // ─── VERİ ───
 let records = [];
 let activeFilter = 'all';
-let selectedType = 'resmi';
+let selectedType = ''; // Başlangıçta hiçbiri seçili değil
 
-const LABEL  = { resmi:'Resmi Tatil', hafta:'Hafta İçi', dini:'Bayram Mesaisi' };
+const LABEL   = { resmi:'Resmi Tatil', hafta:'Hafta İçi', dini:'Bayram Mesaisi' };
 const KATSAYI = { resmi: 3, hafta: 2, dini: 3.5 };
-const AY_ADI = ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
-const AY_TAM = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+const AY_ADI  = ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
+const AY_TAM  = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+
+// ─── localStorage YARDIMCI ───
+function saveData() {
+  try {
+    localStorage.setItem('mesai_records_v3', JSON.stringify(records));
+  } catch(e) {
+    showToast('Kayıt hatası: ' + e.message, true);
+  }
+}
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem('mesai_records_v3')
+              || localStorage.getItem('mesai_records_v2')
+              || localStorage.getItem('mesai_records');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      records = Array.isArray(parsed) ? parsed : (parsed.records || []);
+    }
+  } catch(e) {
+    records = [];
+  }
+}
 
 // ─── SAYFA GEÇİŞ ───
 function showPage(id, btn) {
@@ -529,12 +291,310 @@ function showPage(id, btn) {
   document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   btn.classList.add('active');
-  if (id === 'aylik')   renderAylik();
-  if (id === 'yillik')  renderYillik();
+  if (id === 'aylik')    renderAylik();
+  if (id === 'yillik')   renderYillik();
   if (id === 'kayitlar') renderRecords();
 }
 
-// ─── VERİ YÜKLEMe ───
-function loadData() {
-  try {
-    const raw = localStorage.getItem('mesai_records_v3') || localStorage.getI
+// ─── TİP SEÇİMİ ───
+function selectType(btn) {
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedType = btn.dataset.type;
+  updatePreview();
+}
+
+// ─── BUGÜNÜN TARİHİ ───
+function setTodayDate() {
+  const t = new Date();
+  const y = t.getFullYear();
+  const m = String(t.getMonth() + 1).padStart(2, '0');
+  const d = String(t.getDate()).padStart(2, '0');
+  document.getElementById('inputDate').value = `${y}-${m}-${d}`;
+}
+
+// ─── KAYDET ───
+function saveRecord() {
+  const date  = document.getElementById('inputDate').value;
+  const hours = parseFloat(document.getElementById('inputHours').value);
+  const note  = document.getElementById('inputNote').value.trim();
+
+  if (!date)           { showToast('Lütfen tarih seçin!', true); return; }
+  if (!hours || hours <= 0) { showToast('Lütfen saat girin!', true); return; }
+  if (!selectedType)   { showToast('Lütfen tatil türü seçin!', true); return; }
+
+  const record = {
+    id: Date.now(),
+    date,
+    hours,
+    type: selectedType,
+    note,
+  };
+
+  records.unshift(record);
+  saveData();
+  updateYearSelects();
+  updateSummary();
+  renderRecords();
+
+  // Formu sıfırla
+  setTodayDate();
+  document.getElementById('inputHours').value = '';
+  document.getElementById('inputNote').value = '';
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  selectedType = '';
+
+  showToast('✓ Mesai kaydedildi!');
+}
+
+// ─── SİL ───
+function deleteRecord(id) {
+  if (!confirm('Bu kaydı silmek istediğinizden emin misiniz?')) return;
+  records = records.filter(r => r.id !== id);
+  saveData();
+  updateYearSelects();
+  updateSummary();
+  renderRecords();
+  showToast('Kayıt silindi.');
+}
+
+// ─── FİLTRE ───
+function setFilter(btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = btn.dataset.filter;
+  renderRecords();
+}
+
+// ─── KAYITLARI GÖSTER ───
+function renderRecords() {
+  const yearVal = document.getElementById('yearSelect').value;
+  let filtered = records.filter(r => {
+    const yMatch = yearVal === 'all' || r.date.startsWith(yearVal);
+    const tMatch = activeFilter === 'all' || r.type === activeFilter;
+    return yMatch && tMatch;
+  });
+
+  // Tarihe göre sırala (yeniden eskiye)
+  filtered.sort((a, b) => b.date.localeCompare(a.date));
+
+  const el = document.getElementById('recordsList');
+  if (filtered.length === 0) {
+    el.innerHTML = `<div class="empty"><div class="empty-icon">📋</div><p>Kayıt bulunamadı.</p></div>`;
+    return;
+  }
+
+  el.innerHTML = filtered.map(r => {
+    const [y, m, d] = r.date.split('-');
+    const tarih = `${d} ${AY_TAM[parseInt(m)-1]} ${y}`;
+    const kat = (r.hours * KATSAYI[r.type]).toFixed(1);
+    return `
+      <div class="record">
+        <div class="rec-dot dot-${r.type}"></div>
+        <div class="rec-body">
+          <div class="rec-top">
+            <span class="rec-date">${tarih}</span>
+            <span class="rec-badge badge-${r.type}">${LABEL[r.type]}</span>
+          </div>
+          <div>
+            <span class="rec-hours clr-${r.type}">${r.hours}</span>
+            <span class="rec-hours-unit"> saat ham / ${kat} saat katsayılı (×${KATSAYI[r.type]})</span>
+          </div>
+          ${r.note ? `<div class="rec-note">${r.note}</div>` : ''}
+        </div>
+        <button class="rec-delete" onclick="deleteRecord(${r.id})">🗑</button>
+      </div>
+    `;
+  }).join('');
+}
+
+// ─── ÖZET GÜNCELLE ───
+function updateSummary() {
+  const now = new Date();
+  const thisYear  = now.getFullYear();
+  const thisMonth = now.getMonth() + 1;
+
+  const ayKayitlar = records.filter(r => {
+    const [y, m] = r.date.split('-').map(Number);
+    return y === thisYear && m === thisMonth;
+  });
+
+  const resmi = ayKayitlar.filter(r => r.type === 'resmi').reduce((s, r) => s + r.hours, 0);
+  const hafta  = ayKayitlar.filter(r => r.type === 'hafta').reduce((s, r) => s + r.hours, 0);
+  const dini   = ayKayitlar.filter(r => r.type === 'dini').reduce((s, r) => s + r.hours, 0);
+  const toplam = resmi + hafta + dini;
+  const katli  = resmi * 3 + hafta * 2 + dini * 3.5;
+
+  document.getElementById('sumResmi').textContent = resmi || 0;
+  document.getElementById('sumHafta').textContent  = hafta  || 0;
+  document.getElementById('sumDini').textContent   = dini   || 0;
+  document.getElementById('totalVal').textContent  = toplam || 0;
+  document.getElementById('totalKat').textContent  = katli.toFixed(1) + ' saat';
+  document.getElementById('totalBarBaslik').textContent = `${AY_TAM[thisMonth-1]} ${thisYear} Mesai`;
+  document.getElementById('hdrTotal').textContent = katli.toFixed(1) + ' saat';
+}
+
+function updatePreview() { updateSummary(); }
+
+// ─── YIL SEÇİCİLERİ ───
+function updateYearSelects() {
+  const years = [...new Set(records.map(r => r.date.split('-')[0]))].sort((a,b) => b-a);
+  ['yearSelect', 'aylikYil'].forEach(id => {
+    const sel = document.getElementById(id);
+    const cur = sel.value;
+    sel.innerHTML = '<option value="all">Tüm Yıllar</option>';
+    years.forEach(y => {
+      const opt = document.createElement('option');
+      opt.value = y; opt.textContent = y;
+      sel.appendChild(opt);
+    });
+    if (years.includes(cur)) sel.value = cur;
+  });
+}
+
+// ─── AYLIK ───
+function renderAylik() {
+  const yilVal = document.getElementById('aylikYil').value;
+  const kayitlar = yilVal === 'all' ? records : records.filter(r => r.date.startsWith(yilVal));
+
+  const ayToplam = Array(12).fill(0);
+  kayitlar.forEach(r => {
+    const m = parseInt(r.date.split('-')[1]) - 1;
+    ayToplam[m] += r.hours * KATSAYI[r.type];
+  });
+
+  const max = Math.max(...ayToplam, 1);
+  document.getElementById('aylikBars').innerHTML = AY_ADI.map((ad, i) => `
+    <div class="month-row">
+      <div class="month-name">${ad}</div>
+      <div class="month-bar-wrap">
+        <div class="month-bar-fill" style="width:${(ayToplam[i]/max*100).toFixed(1)}%"></div>
+      </div>
+      <div class="month-val">${ayToplam[i].toFixed(1)}s</div>
+    </div>
+  `).join('');
+
+  // Ay detayı — bu ayın kayıtları
+  const now = new Date();
+  const detayAy = yilVal === 'all' ? now.getMonth() + 1 : null;
+  const detayYil = yilVal === 'all' ? now.getFullYear() : parseInt(yilVal);
+  const detayKayitlar = records.filter(r => {
+    const [y, m] = r.date.split('-').map(Number);
+    return y === detayYil && (detayAy === null || m === detayAy);
+  });
+
+  if (detayKayitlar.length === 0) {
+    document.getElementById('aylikDetay').innerHTML = `<div class="empty"><div class="empty-icon">📅</div><p>Bu dönemde kayıt yok.</p></div>`;
+    return;
+  }
+
+  const resmi = detayKayitlar.filter(r=>r.type==='resmi').reduce((s,r)=>s+r.hours,0);
+  const hafta  = detayKayitlar.filter(r=>r.type==='hafta').reduce((s,r)=>s+r.hours,0);
+  const dini   = detayKayitlar.filter(r=>r.type==='dini').reduce((s,r)=>s+r.hours,0);
+  const katli  = resmi*3 + hafta*2 + dini*3.5;
+
+  document.getElementById('aylikDetay').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:12px;">
+      <div>🏛 Resmi: <span style="color:var(--accent)">${resmi}s</span></div>
+      <div>💼 Hafta: <span style="color:var(--green)">${hafta}s</span></div>
+      <div>🌙 Bayram: <span style="color:var(--purple)">${dini}s</span></div>
+      <div>⚡ Katsayılı: <span style="color:var(--accent);font-weight:700">${katli.toFixed(1)}s</span></div>
+    </div>
+  `;
+}
+
+// ─── YILLIK ───
+function renderYillik() {
+  const years = [...new Set(records.map(r => r.date.split('-')[0]))].sort((a,b) => b-a);
+  const empty = document.getElementById('yillikEmpty');
+  const body  = document.getElementById('yillikBody');
+
+  if (years.length === 0) {
+    empty.style.display = 'block';
+    body.innerHTML = '';
+    return;
+  }
+  empty.style.display = 'none';
+
+  body.innerHTML = years.map(y => {
+    const yKayit = records.filter(r => r.date.startsWith(y));
+    const resmi = yKayit.filter(r=>r.type==='resmi').reduce((s,r)=>s+r.hours,0);
+    const hafta  = yKayit.filter(r=>r.type==='hafta').reduce((s,r)=>s+r.hours,0);
+    const dini   = yKayit.filter(r=>r.type==='dini').reduce((s,r)=>s+r.hours,0);
+    const ham    = resmi + hafta + dini;
+    const katli  = resmi*3 + hafta*2 + dini*3.5;
+    return `<tr>
+      <td><span class="year-num">${y}</span></td>
+      <td class="resmi-clr">${resmi}s</td>
+      <td class="hafta-clr">${hafta}s</td>
+      <td class="dini-clr">${dini}s</td>
+      <td class="total-clr">${ham}s</td>
+      <td style="color:var(--accent);font-weight:700">${katli.toFixed(1)}s</td>
+    </tr>`;
+  }).join('');
+}
+
+// ─── YEDEK ───
+function exportData() {
+  const json = JSON.stringify({ records, exportDate: new Date().toISOString() }, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `mesai_yedek_${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  showToast('Yedek alındı!');
+}
+
+function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      records = Array.isArray(data) ? data : (data.records || []);
+      saveData();
+      updateYearSelects();
+      updateSummary();
+      renderRecords();
+      showToast('Veriler geri yüklendi!');
+    } catch(err) {
+      showToast('Dosya okunamadı!', true);
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+function clearAll() {
+  if (!confirm('Tüm kayıtlar silinecek! Emin misiniz?')) return;
+  records = [];
+  saveData();
+  updateYearSelects();
+  updateSummary();
+  renderRecords();
+  showToast('Tüm kayıtlar silindi.');
+}
+
+// ─── TOAST ───
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (isError ? ' error' : '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ─── BAŞLAT ───
+function init() {
+  loadData();
+  setTodayDate();
+  updateYearSelects();
+  updateSummary();
+  renderRecords();
+}
+
+init();
+</script>
+</body>
+</html>
